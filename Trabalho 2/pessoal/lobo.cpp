@@ -1,0 +1,27 @@
+#include "lobo.h"
+
+Lobo::Lobo()
+{
+    model = new Model3DS("3ds/wolf.3ds");
+}
+
+void Lobo::desenha()
+{
+    glPushMatrix();
+        Objeto::desenha();
+
+        //glScalef(1,1,1.2);
+        glRotatef(-90,1,0,0);
+        //glTranslatef(0,0,0);
+        //glScalef(1,1,1);
+        //model->draw();
+        if (selecionado) {
+            GUI::setColor(0.0,0.5,0.5);
+            model->draw(false);
+        } else {
+            //GUI::setColor(1,1,0);
+            model->draw();
+        }
+
+    glPopMatrix();
+}
