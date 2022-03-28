@@ -1,12 +1,10 @@
-#include <iostream>
-#include <gui.h>
-
-
+ #include <iostream>
 
 using namespace std;
 
+#include <gui.h>
 
-//Model3DS carro = Model3DS("../3ds/cartest.3DS");
+Model3DS carro = Model3DS("../3ds/cartest.3DS");
 
 void modeloTeste()
 {
@@ -165,22 +163,6 @@ float caixaEscZ = 1;
 
 bool caixa = true;
 
-/**
- * Draw a character string.
- *
- * @param x        The x position
- * @param y        The y position
- * @param z        The z position
- * @param string   The character string
- */
-void drawString(float x, float y, float z, char *string) {
-  glRasterPos3f(x, y, z);
-
-  for (char* c = string; *c != '\0'; c++) {
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);  // Updates the position
-  }
-}
-
 void desenha() {
     GUI::displayInit();
 
@@ -188,28 +170,6 @@ void desenha() {
     //GUI::setLight(1,  1,1,0, true); //,false);
     //GUI::setLight(2, -1,1,0, true); //,false);
     //GUI::setLight(3,  0,0.5,0, true); //,false);
-
-drawString(0.,0.,0., "Teste");
-string str_obj("Texto para UI");
-
-
-
-glMatrixMode( GL_PROJECTION );
-glPushMatrix();
-glLoadIdentity();
-gluOrtho2D( 0, 1280, 0, 1024 );
-
-glMatrixMode( GL_MODELVIEW );
-glPushMatrix();
-glLoadIdentity();
-glRasterPos2i( 10, 1014 );  // move in 10 pixels from the left and bottom edges
-glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, '1');
-
-glPopMatrix();
-
-glMatrixMode( GL_PROJECTION );
-glPopMatrix();
-glMatrixMode( GL_MODELVIEW );
 
     GUI::setLight(0,  3,5,4, true,false);
 
@@ -268,7 +228,7 @@ glMatrixMode( GL_MODELVIEW );
         glRotatef(-90, 1,0,0);
         glTranslatef(0,0,0);
         glScalef(0.0005,0.0005,0.0005);
-        //carro.draw( false );
+        carro.draw( false );
     glPopMatrix();
 
 //    glPushMatrix();

@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>3ds/cartest.3DS</file>
-        <file>3ds/maclaren.3DS</file>
-        <file>3ds/wolf.3ds</file>
-    </qresource>
-</RCC>

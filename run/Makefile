@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_QML_DEBUG
 CFLAGS        = -pipe -g -Wall -W -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -fPIC $(DEFINES)
-INCPATH       = -I../../GLUTdoZero20212_mouse -I. -I../bib -I../gui_glut -Itrab1 -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+INCPATH       = -I../../CG -I. -I../bib -I../gui_glut -Itrab1 -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = GLUTdoZero20211_mouse1.0.0
-DISTDIR = /mnt/d/Code/CG/GLUTdoZero20212_mouse/run/.tmp/GLUTdoZero20211_mouse1.0.0
+DISTDIR = /mnt/c/Users/Marcos\ Vinícius/Desktop/Code/CG/run/.tmp/GLUTdoZero20211_mouse1.0.0
 LINK          = g++
 LFLAGS        = 
 LIBS          = $(SUBLIBS) -lGL -lGLU -lglut -l3ds -lSDL_image   
@@ -59,8 +59,10 @@ SOURCES       = ../main.cpp \
 		../bib/Desenha.cpp \
 		../bib/model3ds.cpp \
 		../bib/Vetor3D.cpp \
+		../components/object.cpp \
 		../gui_glut/extra.cpp \
-		../gui_glut/gui.cpp 
+		../gui_glut/gui.cpp \
+		../utils/color.cpp 
 OBJECTS       = main.o \
 		Camera.o \
 		CameraDistante.o \
@@ -68,8 +70,10 @@ OBJECTS       = main.o \
 		Desenha.o \
 		model3ds.o \
 		Vetor3D.o \
+		object.o \
 		extra.o \
-		gui.o
+		gui.o \
+		color.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -146,11 +150,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		bib/Desenha.h \
 		bib/model3ds.h \
 		bib/Vetor3D.h \
+		components/object.h \
 		gui_glut/extra.h \
 		gui_glut/gui.h \
-		utils/color.h \
-		utils/color.h \
-		utils/color.h \
 		utils/color.h ../main.cpp \
 		../bib/Camera.cpp \
 		../bib/CameraDistante.cpp \
@@ -158,8 +160,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../bib/Desenha.cpp \
 		../bib/model3ds.cpp \
 		../bib/Vetor3D.cpp \
+		../components/object.cpp \
 		../gui_glut/extra.cpp \
-		../gui_glut/gui.cpp
+		../gui_glut/gui.cpp \
+		../utils/color.cpp
 QMAKE_TARGET  = GLUTdoZero20211_mouse
 DESTDIR       = 
 TARGET        = GLUTdoZero20211_mouse
@@ -391,6 +395,9 @@ model3ds.o: ../bib/model3ds.cpp ../bib/model3ds.h
 Vetor3D.o: ../bib/Vetor3D.cpp ../bib/Vetor3D.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Vetor3D.o ../bib/Vetor3D.cpp
 
+object.o: ../components/object.cpp ../components/object.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o object.o ../components/object.cpp
+
 extra.o: ../gui_glut/extra.cpp ../gui_glut/extra.h \
 		../bib/CameraDistante.h \
 		../bib/Camera.h \
@@ -408,6 +415,9 @@ gui.o: ../gui_glut/gui.cpp ../gui_glut/gui.h \
 		../bib/Desenha.h \
 		../bib/model3ds.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gui.o ../gui_glut/gui.cpp
+
+color.o: ../utils/color.cpp ../utils/color.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color.o ../utils/color.cpp
 
 ####### Install
 
