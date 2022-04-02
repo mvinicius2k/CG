@@ -16,10 +16,13 @@ SOURCES += main.cpp \
     bib/Desenha.cpp \
     bib/model3ds.cpp \
     bib/Vetor3D.cpp \
+    components/home.cpp \
+    components/model3d.cpp \
     components/object.cpp \
     gui_glut/extra.cpp \
     gui_glut/gui.cpp \
-    utils/color.cpp
+    utils/color.cpp \
+    utils/material.cpp
 
 HEADERS += \
     bib/Camera.h \
@@ -28,7 +31,10 @@ HEADERS += \
     bib/Desenha.h \
     bib/model3ds.h \
     bib/Vetor3D.h \
+    components/home.h \
+    components/model3d.h \
     components/object.h \
     gui_glut/extra.h \
     gui_glut/gui.h \
-    utils/color.h
+    utils/color.h \
+    utils/material.h

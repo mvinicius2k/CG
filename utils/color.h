@@ -1,13 +1,14 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+using namespace std;
 
-class color
+class Color
 {
 public:
-    floar r,g,b,a;
-    static random();
-    color();
+    float r,g,b,a;
+    static  void random();
+    Color();
 };
 
 #endif // COLOR_H
