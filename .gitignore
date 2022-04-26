@@ -1,1 +1,11 @@
-run
+*
+!.vs
+!git
+!*.sln
+!*.dll
+!*.cpp
+!*.h
+!*.filters
+!*.vcxproj
+!*.md
+
