@@ -1,4 +1,5 @@
 #include "extra.h"
+#include <GL/glut.h>
 
 bool glutGUI::iluminacao3D = true; //AL
 
@@ -186,120 +187,121 @@ void glutGUI::defaultDisplay() {
 
 void glutGUI::defaultKey(unsigned char key, int x, int y)
 {
-    switch (key)
-    {
-    case 27 :
-    case 13 :
-    case 'q':
-        exit(0);
-        break;
 
-    case 'F':
-        glutFullScreen();
-        break;
-    case 'f':
-        glutReshapeWindow(800,600);
-        break;
+   // switch (key)
+   // {
+   // case 27 :
+   // case 13 :
+   // case 'q':
+   //     exit(0);
+   //     break;
 
-    case 'o':
-        glutGUI::perspective = !glutGUI::perspective;
-        break;
+   // case 'F':
+   //     glutFullScreen();
+   //     break;
+   // case 'f':
+   //     glutReshapeWindow(800,600);
+   //     break;
 
-    //case 'l':
-    //    enabled_light[7] = !enabled_light[7];
-    //    break;
-   /* case '0'...'7':
-        enabled_light[key-'0'] = !enabled_light[key-'0'];
-        break;*/
+   // case 'o':
+   //     glutGUI::perspective = !glutGUI::perspective;
+   //     break;
 
-    case 'c':
-        posCam = 1;
-        delete cam;
-        cam = new CameraDistante(); //CameraDistante(0,1,5, 0,1,0, 0,1,0);
-        orthof = 0.00025*(cam->c - cam->e).modulo();
-        break;
-    case 'j':
-        posCam = 1;
-        delete cam;
-        cam = new CameraJogo(); //CameraDistante(0,1,5, 0,1,0, 0,1,0);
-        break;
-    case 'C':
-        posCam = (posCam+1)%6;
-        delete cam;
-        switch (posCam) {
-        case 0:
-            cam = new CameraDistante(savedCamera[0],savedCamera[1],savedCamera[2],savedCamera[3],savedCamera[4],savedCamera[5],savedCamera[6],savedCamera[7],savedCamera[8]);
-            break;
-        case 1:
-            cam = new CameraDistante(); //CameraDistante(0,1,5, 0,1,0, 0,1,0);
-            break;
-        case 2:
-            cam = new CameraDistante(5,1,0, 0,1,0, 0,1,0);
-            //cam = new CameraDistante(5,0,0, 0,0,0, 0,1,-1);
-            break;
-        case 3:
-            cam = new CameraDistante(0,1,-5, 0,1,0, 0,1,0);
-            break;
-        case 4:
-            cam = new CameraDistante(-5,1,0, 0,1,0, 0,1,0);
-            break;
-        case 5:
-            cam = new CameraDistante(0,6,0, 0,1,0, 0,0,-1);
-            break;
-        }
-        orthof = 0.00025*(cam->c - cam->e).modulo();
-        break;
-    case 's':
-        //save current camera location
-        savedCamera[0] = cam->e.x;
-        savedCamera[1] = cam->e.y;
-        savedCamera[2] = cam->e.z;
-        savedCamera[3] = cam->c.x;
-        savedCamera[4] = cam->c.y;
-        savedCamera[5] = cam->c.z;
-        savedCamera[6] = cam->u.x;
-        savedCamera[7] = cam->u.y;
-        savedCamera[8] = cam->u.z;
-        break;
+   // //case 'l':
+   // //    enabled_light[7] = !enabled_light[7];
+   // //    break;
+   ///* case '0'...'7':
+   //     enabled_light[key-'0'] = !enabled_light[key-'0'];
+   //     break;*/
 
-    case 'm':
-        mouse_lock = MouseLock( ( int(mouse_lock) + 1 )%3 );
-        break;
+   // case 'c':
+   //     posCam = 1;
+   //     delete cam;
+   //     cam = new CameraDistante(); //CameraDistante(0,1,5, 0,1,0, 0,1,0);
+   //     orthof = 0.00025*(cam->c - cam->e).modulo();
+   //     break;
+   // case 'j':
+   //     posCam = 1;
+   //     delete cam;
+   //     cam = new CameraJogo(); //CameraDistante(0,1,5, 0,1,0, 0,1,0);
+   //     break;
+   // case 'C':
+   //     posCam = (posCam+1)%6;
+   //     delete cam;
+   //     switch (posCam) {
+   //     case 0:
+   //         cam = new CameraDistante(savedCamera[0],savedCamera[1],savedCamera[2],savedCamera[3],savedCamera[4],savedCamera[5],savedCamera[6],savedCamera[7],savedCamera[8]);
+   //         break;
+   //     case 1:
+   //         cam = new CameraDistante(); //CameraDistante(0,1,5, 0,1,0, 0,1,0);
+   //         break;
+   //     case 2:
+   //         cam = new CameraDistante(5,1,0, 0,1,0, 0,1,0);
+   //         //cam = new CameraDistante(5,0,0, 0,0,0, 0,1,-1);
+   //         break;
+   //     case 3:
+   //         cam = new CameraDistante(0,1,-5, 0,1,0, 0,1,0);
+   //         break;
+   //     case 4:
+   //         cam = new CameraDistante(-5,1,0, 0,1,0, 0,1,0);
+   //         break;
+   //     case 5:
+   //         cam = new CameraDistante(0,6,0, 0,1,0, 0,0,-1);
+   //         break;
+   //     }
+   //     orthof = 0.00025*(cam->c - cam->e).modulo();
+   //     break;
+   // case 's':
+   //     //save current camera location
+   //     savedCamera[0] = cam->e.x;
+   //     savedCamera[1] = cam->e.y;
+   //     savedCamera[2] = cam->e.z;
+   //     savedCamera[3] = cam->c.x;
+   //     savedCamera[4] = cam->c.y;
+   //     savedCamera[5] = cam->c.z;
+   //     savedCamera[6] = cam->u.x;
+   //     savedCamera[7] = cam->u.y;
+   //     savedCamera[8] = cam->u.z;
+   //     break;
 
-    case 'i':
-        glutGUI::tx = 0.0;
-        glutGUI::ty = 0.0;
-        glutGUI::tz = 0.0;
-        glutGUI::ax = 0.0;
-        glutGUI::ay = 0.0;
-        glutGUI::az = 0.0;
-        glutGUI::sx = 1.0;
-        glutGUI::sy = 1.0;
-        glutGUI::sz = 1.0;
-        glutGUI::lx = 0.0;
-        glutGUI::ly = 0.0;
-        glutGUI::lz = 0.0;
-        break;
+   // case 'm':
+   //     mouse_lock = MouseLock( ( int(mouse_lock) + 1 )%3 );
+   //     break;
 
-    case 'X':
-        autoCamMove(-90,AXIS_X,nIterations);
-        break;
-    case 'x':
-        autoCamMove( 90,AXIS_X,nIterations);
-        break;
-    case 'Y':
-        autoCamMove( 90,AXIS_Y,nIterations);
-        break;
-    case 'y':
-        autoCamMove(-90,AXIS_Y,nIterations);
-        break;
-    case 'Z':
-        autoCamMove(  2,AXIS_Z,nIterations);
-        break;
-    case 'z':
-        autoCamMove( -2,AXIS_Z,nIterations);
-        break;
-    }
+   // case 'i':
+   //     glutGUI::tx = 0.0;
+   //     glutGUI::ty = 0.0;
+   //     glutGUI::tz = 0.0;
+   //     glutGUI::ax = 0.0;
+   //     glutGUI::ay = 0.0;
+   //     glutGUI::az = 0.0;
+   //     glutGUI::sx = 1.0;
+   //     glutGUI::sy = 1.0;
+   //     glutGUI::sz = 1.0;
+   //     glutGUI::lx = 0.0;
+   //     glutGUI::ly = 0.0;
+   //     glutGUI::lz = 0.0;
+   //     break;
+
+   // case 'X':
+   //     autoCamMove(-90,AXIS_X,nIterations);
+   //     break;
+   // case 'x':
+   //     autoCamMove( 90,AXIS_X,nIterations);
+   //     break;
+   // case 'Y':
+   //     autoCamMove( 90,AXIS_Y,nIterations);
+   //     break;
+   // case 'y':
+   //     autoCamMove(-90,AXIS_Y,nIterations);
+   //     break;
+   // case 'Z':
+   //     autoCamMove(  2,AXIS_Z,nIterations);
+   //     break;
+   // case 'z':
+   //     autoCamMove( -2,AXIS_Z,nIterations);
+   //     break;
+   // }
 
     glutPostRedisplay();
 }
@@ -340,6 +342,10 @@ void glutGUI::autoCamMotion(float value, Axis axis, int nIterations)
 
 void glutGUI::idle()
 {
+    
+    
+    
+        
     dtx = 0.0; dty = 0.0; dtz = 0.0;
     dax = 0.0; day = 0.0; daz = 0.0;
     dsx = 0.0; dsy = 0.0; dsz = 0.0;
@@ -349,6 +355,7 @@ void glutGUI::idle()
 }
 
 void glutGUI::defaultMouseButton(int button, int state, int x, int y) {
+    
     dtx = 0.0; dty = 0.0; dtz = 0.0;
     dax = 0.0; day = 0.0; daz = 0.0;
     dsx = 0.0; dsy = 0.0; dsz = 0.0;
@@ -366,6 +373,7 @@ void glutGUI::defaultMouseButton(int button, int state, int x, int y) {
             //              objeto_selecionado = pick;
         } else {// state = GLUT_UP
             lbpressed = false;
+
         }
     }
     // if the middle button is pressed
@@ -386,8 +394,11 @@ void glutGUI::defaultMouseButton(int button, int state, int x, int y) {
             //            objeto_selecionado = 0;
         } else {// state = GLUT_UP
             rbpressed = false;
+
         }
     }
+
+
 
     last_x = x;
     last_y = y;
@@ -396,6 +407,8 @@ void glutGUI::defaultMouseButton(int button, int state, int x, int y) {
 void glutGUI::mouseMove(int x, int y) {
     if ( mouse_lock == ONLY_X ) last_y = y;
     if ( mouse_lock == ONLY_Y ) last_x = x;
+    
+    //cout << x << endl;
 
     dtx = 0.0; dty = 0.0; dtz = 0.0;
     dax = 0.0; day = 0.0; daz = 0.0;
@@ -408,6 +421,7 @@ void glutGUI::mouseMove(int x, int y) {
             cam->rotatey(x,last_x);
         }
         if (trans_obj) {
+            fator = 100.f;
             dax = (y - last_y)/fator;
             day = (x - last_x)/fator;
             ax += dax;
@@ -428,6 +442,8 @@ void glutGUI::mouseMove(int x, int y) {
         }
         if (trans_obj) {
             dtx = (x - last_x)/fator;
+            
+            //cout << " < " << dtx << "> ";
             dty = -(y - last_y)/fator;
             tx += dtx;
             ty += dty;

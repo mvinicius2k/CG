@@ -2,13 +2,17 @@
 #include "object.h"
 #include <windows.h>
 #include "../gui_glut/gui.h"
+#include <string>
+#include "../utils/strings.h"
 using namespace std;
+
+
 
 Object::Object()
 {
 
     _active = true;
-
+    _scale = Vetor3D(1.f, 1.f, 1.f);
 
 
 }
@@ -17,31 +21,115 @@ Object::~Object() {
 
 }
 
-
 void Object::draw()
 {
-    glTranslatef(_position.x, _position.y, _position.z);
-    glRotatef(_rotation.x, 1,0,0);
-    glRotatef(_rotation.y, 0, 1, 0);
-    glRotatef(_position.z, 0, 0, 1);
-    GUI::drawOrigin(_drawOriginSize);
-    glScalef(_scale.x, _scale.y, _scale.z);
+}
+
+void Object::render()
+{
+    if (_selected)
+        mouseInput();
+
+    glPushMatrix();
+    {
+        
+
+        glTranslatef(_position.x, _position.y, _position.z);
+        glRotatef(_rotation.x, 1,0,0);
+        glRotatef(_rotation.y, 0, 1, 0);
+        glRotatef(_position.z, 0, 0, 1);
+        GUI::drawOrigin(true || _drawOriginSize);
+        glScalef(_scale.x, _scale.y, _scale.z);
+
+        draw();
+        if (_showInfos)
+            renderInfos();
+
+    } glPopMatrix();
+
+
+}
+
+void Object::offAllTransformActions()
+{
+    _translate = _escalete = _rotate = false;
+    
+
+}
+
+void Object::renderInfos()
+{
+    auto infoTxt = string("posição: ")
+        .append(Strings::Vector3DToString(_position))
+        .append(" rotação: ")
+        .append(Strings::Vector3DToString(_rotation))
+        .append(" escala: ")
+        .append(Strings::Vector3DToString(_scale));
+
+    Strings::DrawString(_position.x, _position.y, _position.z, infoTxt);
 }
 
 void Object::mouseInput()
 {
-    if(!_selected)
-        return;
 
-    _position.x += glutGUI::dtx;
-    _position.y += glutGUI::dty;
-    _position.z += glutGUI::dtz;
+    
 
-    _rotation.x += glutGUI::dax;
-    _rotation.y += glutGUI::day;
-    _rotation.z += glutGUI::daz;
+    if (_translate)
+    {
+        
 
-    _scale.x += glutGUI::dsx;
-    _scale.y += glutGUI::dsy;
-    _scale.z += glutGUI::dsz;
+        _position.x = glutGUI::tx;
+        _position.y = glutGUI::ty;
+        _position.z = glutGUI::tz;
+
+        
+    }
+    if (_rotate)
+    {
+
+        _rotation.x = glutGUI::ax;
+        _rotation.y = glutGUI::ay;
+        _rotation.z = glutGUI::az;
+    }
+    if (_escalete)
+    {
+        _scale.x = glutGUI::sx;
+        _scale.y = glutGUI::sy;
+        _scale.z = glutGUI::sz;
+
+    }
+
+
+
+}
+
+bool Object::isSelected()
+{
+    return _selected;
+}
+
+void Object::setSelected(bool value)
+{
+
+    if (value)
+    {
+        glutGUI::ax = _rotation.x;
+        glutGUI::ay = _rotation.y;
+        glutGUI::az = _rotation.z;
+
+        glutGUI::sx = _scale.x;
+        glutGUI::sy = _scale.y;
+        glutGUI::sz = _scale.z;
+
+        glutGUI::tx = _position.x;
+        glutGUI::ty = _position.y;
+        glutGUI::tz = _position.z;
+
+    }
+
+    _selected = true;
+}
+
+string Object::serialize() {
+    return "";
 }

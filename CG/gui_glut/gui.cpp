@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <gl/glut.h>
 #include "gui.h"
+#include "../utils/mouse.h"
 
 GUI::GUI(int width, int height, displayFunction dFunction, keyFunction kFunction, mouseButtonFunction mbFunction, const char *title, int argc, char** argv) {
     wTitle = title;
@@ -37,6 +38,7 @@ void GUI::GLUTInit()
     glutIdleFunc(glutGUI::idle);
     glutMouseFunc(mouseButton);
     glutMotionFunc(glutGUI::mouseMove);
+    glutPassiveMotionFunc(Mouse::MouseMotion);
     /*glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE);
     glutInitWindowSize(500, 500);

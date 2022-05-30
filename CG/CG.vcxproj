@@ -158,6 +158,7 @@
     <ClCompile Include="gui_glut\OpenTextures.cpp" />
     <ClCompile Include="HelloOpenGL.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="utils\strings.cpp" />
     <ClCompile Include="utils\color.cpp" />
     <ClCompile Include="utils\material.cpp" />
   </ItemGroup>
@@ -175,6 +176,9 @@
     <ClInclude Include="gui_glut\extra.h" />
     <ClInclude Include="gui_glut\gui.h" />
     <ClInclude Include="gui_glut\OpenTextures.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="utils\mouse.h" />
+    <ClInclude Include="utils\strings.h" />
     <ClInclude Include="utils\color.h" />
     <ClInclude Include="utils\material.h" />
   </ItemGroup>
