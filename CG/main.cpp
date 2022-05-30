@@ -15,9 +15,8 @@
 using namespace std;
 
 const char ADD_TABLE = '1';
-const char TRANSLATE = 'w';
-const char ROTATE = 'e';
-const char SCALE = 'r';
+const char TRANSFORM_OBJECT = 't';
+
 const char NEXT_OBJ = 'd';
 const char PREVIOUS_OBJ = 'a';
 const char REMOVE_OBJ = 127; //Delete
@@ -228,7 +227,6 @@ void selectNextObject()
 	if (current != nullptr)
 	{
 
-		current->offAllTransformActions();
 		current->setSelected(false);
 		currentIndex = (currentIndex + 1) % objects.size();
 		
@@ -237,7 +235,7 @@ void selectNextObject()
 		currentIndex = 0;
 
 	current = objects.at(currentIndex);
-	current->setSelected(false);
+	current->setSelected(true);
 	current->_showInfos = displayObjectInfos;
 }
 
@@ -250,7 +248,6 @@ void selectPreviousObject()
 	if (current != nullptr)
 	{
 
-		current->offAllTransformActions();
 		current->setSelected(false);
 		currentIndex = (currentIndex - 1) % objects.size();
 
@@ -259,7 +256,7 @@ void selectPreviousObject()
 		currentIndex = objects.size() -1;
 
 	current = objects.at(currentIndex);
-	current->setSelected(false);
+	current->setSelected(true);
 	current->_showInfos = displayObjectInfos;
 }
 
@@ -321,9 +318,7 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 	case 'l':
 		glutGUI::trans_luz = !glutGUI::trans_luz;
 		break;
-	case 't':
-		glutGUI::trans_obj = !glutGUI::trans_obj;
-		break;
+	
 	case 's':
 		caixa = !caixa;
 		break;
@@ -349,50 +344,22 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		auto current = getSelectedObject();
 		if (current != nullptr)
 		{
-			current->offAllTransformActions();
 			current->setSelected(false);
 			glutGUI::trans_obj = false;
 
 		}
 		break;
 	}
-	case ROTATE:
-	{
-		auto current = getSelectedObject();
-		if (current != nullptr)
-		{
-			current->offAllTransformActions();
-			current->_rotate = true;
-			glutGUI::trans_obj = true;
-			consoleLog(string("Rotação para ")
-				.append(to_string(currentIndex)));
+	
 
-		}
-		break;
-	}
-	case TRANSLATE: 
+	case TRANSFORM_OBJECT:
 	{
 		auto current = getSelectedObject();
 		if (current != nullptr)
 		{
-			current->offAllTransformActions();
-			current->_translate = true;
+			
 			glutGUI::trans_obj = true;
-			consoleLog(string("Translação para ")
-				.append(to_string(currentIndex)));
-
-		}
-		break;
-	}
-	case SCALE:
-	{
-		auto current = getSelectedObject();
-		if (current != nullptr)
-		{
-			current->offAllTransformActions();
-			current->_escalete = true;
-			glutGUI::trans_obj = true;
-			consoleLog(string("Escala para")
+			consoleLog(string("Transformação para")
 				.append(to_string(currentIndex)));
 
 		}

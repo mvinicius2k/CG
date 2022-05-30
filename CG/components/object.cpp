@@ -50,12 +50,6 @@ void Object::render()
 
 }
 
-void Object::offAllTransformActions()
-{
-    _translate = _escalete = _rotate = false;
-    
-
-}
 
 void Object::renderInfos()
 {
@@ -71,35 +65,17 @@ void Object::renderInfos()
 
 void Object::mouseInput()
 {
+    _position.x = glutGUI::tx;
+    _position.y = glutGUI::ty;
+    _position.z = glutGUI::tz;
 
-    
+    _rotation.x = glutGUI::ax;
+    _rotation.y = glutGUI::ay;
+    _rotation.z = glutGUI::az;
 
-    if (_translate)
-    {
-        
-
-        _position.x = glutGUI::tx;
-        _position.y = glutGUI::ty;
-        _position.z = glutGUI::tz;
-
-        
-    }
-    if (_rotate)
-    {
-
-        _rotation.x = glutGUI::ax;
-        _rotation.y = glutGUI::ay;
-        _rotation.z = glutGUI::az;
-    }
-    if (_escalete)
-    {
-        _scale.x = glutGUI::sx;
-        _scale.y = glutGUI::sy;
-        _scale.z = glutGUI::sz;
-
-    }
-
-
+    _scale.x = glutGUI::sx;
+    _scale.y = glutGUI::sy;
+    _scale.z = glutGUI::sz;
 
 }
 
@@ -127,7 +103,7 @@ void Object::setSelected(bool value)
 
     }
 
-    _selected = true;
+    _selected = value;
 }
 
 string Object::serialize() {

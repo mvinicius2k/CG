@@ -22,7 +22,7 @@ protected:
 
 
     Vetor3D _position, _rotation, _scale;
-    bool _active, _drawOrigin, _showName, _translate, _rotate, _escalete, _showInfos;
+    bool _active, _drawOrigin, _showName, _showInfos;
     float _drawOriginSize;
 
     bool isSelected();
@@ -32,7 +32,6 @@ protected:
     //virtual T& deserialize<T>(string str) = 0;
     void render();
 
-    void offAllTransformActions();
 
     void renderInfos();
     
