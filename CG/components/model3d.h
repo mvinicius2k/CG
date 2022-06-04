@@ -43,18 +43,38 @@ public:
 		return new Model3D(GL_TRIANGLES);
 	}
 	static Model3D* Table(
-		float footerHeight = 7.f,
-		float feetSize = 1.f,
+		float footerHeight = 1.f,
+		float feetSize = .05f,
 		float feetMargin = 0.5f,
 		float surfaceWidth = 1.f,
 		float surfaceDepth = 1.5f,
-		float surfaceHeigth = 0.5f) {
+		float surfaceHeigth = .05f) {
 
 		auto points = new list<Vetor3D>();
 
+		auto feetStart = Vetor3D(-feetSize / 2.f, 0.f, -feetSize / 2.f);
+		auto feetEnd = Vetor3D(feetSize / 2.f, footerHeight, feetSize / 2.f);
 
-		addBox(*points, Vetor3D(0, 0.f, 0), Vetor3D(1, 1, 1));
 		
+
+		//Pernas
+		addBox(*points, 
+			feetStart - Vetor3D(-(surfaceWidth - feetMargin)/2.f, 0, -(surfaceWidth - feetMargin) / 2.f),
+			feetEnd - Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, -(surfaceWidth - feetMargin) / 2.f));
+		addBox(*points,
+			feetStart - Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, (surfaceWidth - feetMargin) / 2.f),
+			feetEnd - Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, (surfaceWidth - feetMargin) / 2.f));
+		addBox(*points,
+			feetStart + Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, -(surfaceWidth - feetMargin) / 2.f),
+			feetEnd + Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, -(surfaceWidth - feetMargin) / 2.f));
+		addBox(*points,
+			feetStart + Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, (surfaceWidth - feetMargin) / 2.f),
+			feetEnd + Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, (surfaceWidth - feetMargin) / 2.f));
+
+
+		addBox(*points,
+			Vetor3D(-surfaceWidth / 2.0f, footerHeight, -surfaceWidth / 2.0f),
+			Vetor3D(surfaceWidth / 2.0f, footerHeight + surfaceHeigth, surfaceWidth / 2.0f));
 		auto arrayPoints = new vector<Vetor3D>(begin(*points), end(*points));
 
 		return new Model3D(GL_QUADS, *arrayPoints);
@@ -77,135 +97,8 @@ public:
 
 	
     
-    static void addBox(list<Vetor3D>& pointList, Vetor3D min, Vetor3D max)
-    {
-		//Base
-		pointList.push_back(Vetor3D(
-			min.x,
-			min.y,
-			min.z));
-		pointList.push_back(Vetor3D(
-			max.x,
-			min.y,
-			min.z
-		));
-		pointList.push_back(Vetor3D(
-			max.x,
-			min.y,
-			max.z
-		));
-		pointList.push_back(Vetor3D(
-			min.x,
-			min.y,
-			max.z
-		));
-		
-		//Teto
-		pointList.push_back(Vetor3D(
-			min.x,
-			max.y,
-			min.z));
-		pointList.push_back(Vetor3D(
-			min.x,
-			max.y,
-			max.z
-		));
-		pointList.push_back(Vetor3D(
-			max.x,
-			max.y,
-			max.z
-		));
-		pointList.push_back(Vetor3D(
-			max.x,
-			max.y,
-			min.z
-		));
-
-		//Fundo
-		pointList.push_back(Vetor3D(
-			min.x,
-			min.y,
-			min.z));
-		pointList.push_back(Vetor3D(
-			min.x,
-			max.y,
-			min.z
-		));
-		pointList.push_back(Vetor3D(
-			max.x,
-			max.y,
-			min.z
-		));
-		pointList.push_back(Vetor3D(
-			max.x,
-			min.y,
-			min.z
-		));
-		
-		//Frente
-		pointList.push_back(Vetor3D(
-			min.x,
-			min.y,
-			max.z));
-		pointList.push_back(Vetor3D(
-			max.x,
-			min.y,
-			max.z
-		));
-		pointList.push_back(Vetor3D(
-			max.x,
-			max.y,
-			max.z
-		));
-		pointList.push_back(Vetor3D(
-			min.x,
-			max.y,
-			max.z
-		));
-		
-		//Direita
-		pointList.push_back(Vetor3D(
-			max.x,
-			min.y,
-			min.z));
-		pointList.push_back(Vetor3D(
-			max.x,
-			max.y,
-			min.z
-		));
-		pointList.push_back(Vetor3D(
-			max.x,
-			max.y,
-			max.z
-		));
-		pointList.push_back(Vetor3D(
-			max.x,
-			min.y,
-			max.z
-		));
-
-		//Direita
-		pointList.push_back(Vetor3D(
-			min.x,
-			min.y,
-			min.z
-		));
-		pointList.push_back(Vetor3D(
-			min.x,
-			min.y,
-			max.z
-		));
-		pointList.push_back(Vetor3D(
-			min.x,
-			max.y,
-			max.z
-		));
-		pointList.push_back(Vetor3D(
-			min.x,
-			max.y,
-			min.z
-		));
-    }
+	void addBox(Vetor3D min, Vetor3D max, Material* material);
+    
     virtual string serialize();
 	virtual void draw();
 	Model3D(GLenum mode, vector<Vetor3D>& lines, vector<Material*>* materials = nullptr, bool randomColors = true);

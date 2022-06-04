@@ -264,9 +264,6 @@ void selectPreviousObject()
 void init()
 {
 
-	/*auto table = Model3D::Table();
-	objects.push_back(table);*/
-
 }
 
 void desenha()

@@ -5,6 +5,141 @@ using namespace std;
 
 
 
+void Model3D::addBox(Vetor3D min, Vetor3D max, Material materials[6])
+{
+	auto pointList = vector<Vetor3D>(24);
+	//Base
+	pointList.push_back(Vetor3D(
+		min.x,
+		min.y,
+		min.z));
+	pointList.push_back(Vetor3D(
+		max.x,
+		min.y,
+		min.z
+	));
+	pointList.push_back(Vetor3D(
+		max.x,
+		min.y,
+		max.z
+	));
+	pointList.push_back(Vetor3D(
+		min.x,
+		min.y,
+		max.z
+	));
+
+	//Teto
+	pointList.push_back(Vetor3D(
+		min.x,
+		max.y,
+		min.z));
+	pointList.push_back(Vetor3D(
+		min.x,
+		max.y,
+		max.z
+	));
+	pointList.push_back(Vetor3D(
+		max.x,
+		max.y,
+		max.z
+	));
+	pointList.push_back(Vetor3D(
+		max.x,
+		max.y,
+		min.z
+	));
+
+	//Fundo
+	pointList.push_back(Vetor3D(
+		min.x,
+		min.y,
+		min.z));
+	pointList.push_back(Vetor3D(
+		min.x,
+		max.y,
+		min.z
+	));
+	pointList.push_back(Vetor3D(
+		max.x,
+		max.y,
+		min.z
+	));
+	pointList.push_back(Vetor3D(
+		max.x,
+		min.y,
+		min.z
+	));
+
+	//Frente
+	pointList.push_back(Vetor3D(
+		min.x,
+		min.y,
+		max.z));
+	pointList.push_back(Vetor3D(
+		max.x,
+		min.y,
+		max.z
+	));
+	pointList.push_back(Vetor3D(
+		max.x,
+		max.y,
+		max.z
+	));
+	pointList.push_back(Vetor3D(
+		min.x,
+		max.y,
+		max.z
+	));
+
+	//Direita
+	pointList.push_back(Vetor3D(
+		max.x,
+		min.y,
+		min.z));
+	pointList.push_back(Vetor3D(
+		max.x,
+		max.y,
+		min.z
+	));
+	pointList.push_back(Vetor3D(
+		max.x,
+		max.y,
+		max.z
+	));
+	pointList.push_back(Vetor3D(
+		max.x,
+		min.y,
+		max.z
+	));
+
+	//Direita
+	pointList.push_back(Vetor3D(
+		min.x,
+		min.y,
+		min.z
+	));
+	pointList.push_back(Vetor3D(
+		min.x,
+		min.y,
+		max.z
+	));
+	pointList.push_back(Vetor3D(
+		min.x,
+		max.y,
+		max.z
+	));
+	pointList.push_back(Vetor3D(
+		min.x,
+		max.y,
+		min.z
+	));
+
+	this->_lines.insert(_lines.end(), pointList.begin(), pointList.end());
+	this->_materials.insert(ma.end(), pointList.begin(), pointList.end());
+	
+}
+
 string Model3D::serialize() {
 	return ""; 
 }
