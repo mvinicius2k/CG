@@ -1,9 +1,8 @@
 #include "material.h"
 
-Material::Material(Color color, bool especular, Vetor3D normal)
+Material::Material(Color color, bool especular)
 {
 	_color = color;
 	_especular = especular;
-	_normal = normal;
 }
 

@@ -1,5 +1,5 @@
 #include "extra.h"
-#include <GL/glut.h>
+#include <glut.h>
 
 bool glutGUI::iluminacao3D = true; //AL
 

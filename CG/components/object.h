@@ -2,10 +2,11 @@
 #define OBJECT_H
 
 #include <iostream>
+#include <vector>
 #include "../bib/Vetor3D.h"
 using namespace std;
 
-//template <typename T>
+
 
 class Object
 {
@@ -24,7 +25,7 @@ protected:
     Vetor3D _position, _rotation, _scale;
     bool _active, _drawOrigin, _showName, _showInfos;
     float _drawOriginSize;
-
+    vector<Object*> _childs;
     bool isSelected();
     void setSelected(bool value);
 

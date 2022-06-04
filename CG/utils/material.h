@@ -10,16 +10,18 @@ class Material
 public:
     Color _color ;
     bool _especular;
-    Vetor3D _normal;
+    
+    
+
     static Material* White() 
     {
-        return new Material(Color::White(), false, Vetor3D(1, 1, 1));
+        return new Material(Color::White(), false);
     }
     static Material* Random()
     {
-        return new Material(Color::Random(), false, Vetor3D(1, 1, 1));
+        return new Material(Color::Random(), false);
     }
-    Material(Color color, bool especular, Vetor3D normal);
+    Material(Color color, bool especular);
 };
 
 #endif // MATERIAL_H

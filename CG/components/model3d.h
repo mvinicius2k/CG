@@ -6,6 +6,9 @@
 #include <glut.h>
 #include <list>
 #include <vector>
+#include "../utils/color.h"
+
+
 using namespace std;
 
 class Model3D : public Object{
@@ -13,91 +16,110 @@ class Model3D : public Object{
 
 
 public:
-    vector<Vetor3D> _lines;
+    vector<Vetor3D> _lines, _normals;
 	vector<Material*>  _materials;
     GLenum _mode;
 	
+	
 
-	int getCycleSize()
-	{
-		switch (_mode) 
-		{
-			case GL_POLYGON:
-				return INT16_MAX;
-			case GL_TRIANGLES:
-				return 3;
-			case GL_QUADS:
-				return 4;
-			default:
-				cout << "GLenum " << _mode << " não suportdado" << endl;
-				return GL_TRIANGLES;
-		}
-	}
+	int getCycleSize();
+	
+	
 
 	static Model3D* Home(
 		float floorWidth = 7.f,
 		float floorDepth = 10.f,
 		float wallHeight = 2.8f,
-		float peakRelativeHeight = .5f) {
+		float peakRelativeHeight = .5f,
+		Material* wallMaterial = nullptr,
+		Material* ceilMaterial = nullptr) {
 
-		return new Model3D(GL_TRIANGLES);
+		
+
+		auto walls = Model3D::Box(Vetor3D(0, 0, 0), Vetor3D(floorWidth, wallHeight, -floorDepth), wallMaterial);
+		auto ceil = new Model3D(GL_TRIANGLES);
+
+		auto ceilPoints = vector<Vetor3D>(18);
+		auto ceilNormals = vector<Vetor3D>(4);
+
+		//Frente
+		ceilPoints.push_back(Vetor3D(0, wallHeight, 0));
+		ceilPoints.push_back(Vetor3D(floorWidth, wallHeight, 0));
+		ceilPoints.push_back(Vetor3D(floorWidth, wallHeight + peakRelativeHeight, 0));
+		ceilNormals.push_back(Vetor3D(0, 0, 1));
+
+
+		ceil->_lines.insert(ceil->_lines.end(), ceilPoints.begin(), ceilPoints.end());
+		
+		ceil->_materials.push_back(ceilMaterial);
+
+		
+		walls->_childs.push_back(ceil);
+
+
+
+
+		return walls;
 	}
-	static Model3D* Table(
+
+	
+
+	static Model3D* Box(Vetor3D min, Vetor3D max, Material* material = nullptr)
+	{
+		auto box = new Model3D(GL_QUADS);
+
+		box->addBox(min, max);
+		box->_materials.push_back(material);
+
+		return box;
+	}
+
+	static Model3D* SimpleTable(
+		Material* material = nullptr,
 		float footerHeight = 1.f,
 		float feetSize = .05f,
 		float feetMargin = 0.5f,
 		float surfaceWidth = 1.f,
 		float surfaceDepth = 1.5f,
-		float surfaceHeigth = .05f) {
+		float surfaceHeigth = .05f
+		) {
+
+		auto model = new Model3D(GL_QUADS);
 
 		auto points = new list<Vetor3D>();
 
 		auto feetStart = Vetor3D(-feetSize / 2.f, 0.f, -feetSize / 2.f);
 		auto feetEnd = Vetor3D(feetSize / 2.f, footerHeight, feetSize / 2.f);
 
-		
+		model->_materials.push_back(material);
+
 
 		//Pernas
-		addBox(*points, 
+		model->addBox(
 			feetStart - Vetor3D(-(surfaceWidth - feetMargin)/2.f, 0, -(surfaceWidth - feetMargin) / 2.f),
 			feetEnd - Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, -(surfaceWidth - feetMargin) / 2.f));
-		addBox(*points,
+		model->addBox(
 			feetStart - Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, (surfaceWidth - feetMargin) / 2.f),
 			feetEnd - Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, (surfaceWidth - feetMargin) / 2.f));
-		addBox(*points,
+		model->addBox(
 			feetStart + Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, -(surfaceWidth - feetMargin) / 2.f),
 			feetEnd + Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, -(surfaceWidth - feetMargin) / 2.f));
-		addBox(*points,
+		model->addBox(
 			feetStart + Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, (surfaceWidth - feetMargin) / 2.f),
 			feetEnd + Vetor3D(-(surfaceWidth - feetMargin) / 2.f, 0, (surfaceWidth - feetMargin) / 2.f));
 
 
-		addBox(*points,
+		model->addBox(
 			Vetor3D(-surfaceWidth / 2.0f, footerHeight, -surfaceWidth / 2.0f),
 			Vetor3D(surfaceWidth / 2.0f, footerHeight + surfaceHeigth, surfaceWidth / 2.0f));
-		auto arrayPoints = new vector<Vetor3D>(begin(*points), end(*points));
-
-		return new Model3D(GL_QUADS, *arrayPoints);
-	}
-
-	static Model3D* Plane(Vetor3D min, Vetor3D max) 
-	{
-		auto points = new list<Vetor3D>();
-
-		points->push_back(Vetor3D(min.x, min.y, min.z));
-		points->push_back(Vetor3D(max.x, min.y, min.z));
-		points->push_back(Vetor3D(max.x, max.y, min.z));
-		points->push_back(Vetor3D(min.x, max.y, min.z));
 		
-		auto arrayPoints = new vector<Vetor3D>(begin(*points), end(*points));
 
-		return new Model3D(GL_QUADS, *arrayPoints);
-
+		return model;
 	}
 
 	
     
-	void addBox(Vetor3D min, Vetor3D max, Material* material);
+	void addBox(Vetor3D min, Vetor3D max);
     
     virtual string serialize();
 	virtual void draw();

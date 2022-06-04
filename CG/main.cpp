@@ -15,6 +15,7 @@
 using namespace std;
 
 const char ADD_TABLE = '1';
+const char ADD_HOME = '2';
 const char TRANSFORM_OBJECT = 't';
 
 const char NEXT_OBJ = 'd';
@@ -322,8 +323,13 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 
 
 	case ADD_TABLE:
-		objects.push_back(Model3D::Table());
+		objects.push_back(Model3D::SimpleTable());
 		consoleLog(string("Mesa adicionada na posiçao ").append(to_string(objects.size() - 1)));
+		break;
+
+	case ADD_HOME:
+		objects.push_back(Model3D::Home());
+		consoleLog(string("Casa adicionada na posiçao ").append(to_string(objects.size() - 1)));
 		break;
 
 	case NEXT_OBJ:

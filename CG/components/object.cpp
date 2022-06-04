@@ -27,11 +27,15 @@ void Object::draw()
 
 void Object::render()
 {
+    if (!_active)
+        return;
     if (_selected)
         mouseInput();
 
     glPushMatrix();
     {
+        
+        
         
 
         glTranslatef(_position.x, _position.y, _position.z);
@@ -44,6 +48,10 @@ void Object::render()
         draw();
         if (_showInfos)
             renderInfos();
+
+        if (_childs.size() > 0)
+            for (auto child : _childs)
+                child->render();
 
     } glPopMatrix();
 

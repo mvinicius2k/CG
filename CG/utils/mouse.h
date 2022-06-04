@@ -1,5 +1,6 @@
 #pragma once
-#include "../gui_glut/extra.h";
+#include "../gui_glut/extra.h"
+
 
 using namespace std;
 
@@ -9,7 +10,7 @@ private:
 
 public:
 	inline static int _lastX, _lastY;
-
+	
 
 
 	static void MouseMotion(int x, int y)

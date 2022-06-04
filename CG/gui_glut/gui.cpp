@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <GL/glew.h>
-#include <gl/glut.h>
+#include <glut.h>
 #include "gui.h"
 #include "../utils/mouse.h"
 
