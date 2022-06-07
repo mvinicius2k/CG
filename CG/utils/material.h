@@ -11,7 +11,10 @@ public:
     Color _color ;
     bool _especular;
     
-    
+    static Material* Default()
+    {
+        return Material::Random();
+    }
 
     static Material* White() 
     {
@@ -19,7 +22,7 @@ public:
     }
     static Material* Random()
     {
-        return new Material(Color::Random(), false);
+        return new Material(Color::Random(), true);
     }
     Material(Color color, bool especular);
 };

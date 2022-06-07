@@ -7,25 +7,15 @@
 #include "components/object.h"
 #include <vector>
 #include "components/model3d.h"
-#include "main.h"
 #include "utils/mouse.h"
+#include "main.h"
 
 
 
 using namespace std;
 
-const char ADD_TABLE = '1';
-const char ADD_HOME = '2';
-const char TRANSFORM_OBJECT = 't';
 
-const char NEXT_OBJ = 'd';
-const char PREVIOUS_OBJ = 'a';
-const char REMOVE_OBJ = 127; //Delete
-const char SAVE_SCENE = 'S';
-const char RELOAD_SCENE = 'R';
 
-const char TOGGLE_OBJECT_INFO = 'i';
-const char DESELECT = '\'';
 
 //Model3DS carro = Model3DS("/3ds/cartest.3DS");
 
@@ -280,6 +270,7 @@ void desenha()
 		_initialized = true;
 	}
 
+
 	
 
 	//GUI::setLight(0,  0,1,0, true); //,false);
@@ -294,6 +285,16 @@ void desenha()
 	//GUI::drawFloor(5,5,0.1,0.1);
 	GUI::drawFloor();
 	//consoleLog(to_string(glutGUI::dtx));
+
+
+	//glBegin(GL_QUADS);
+	//{
+	//	glNormal3f(0, 1, 0);
+	//	glVertex3f(0, 1, 5);
+	//	glVertex3f(5, 1, 5);
+	//	glVertex3f(5, 1, 1);
+	//	glVertex3f(1, 1, 1);
+	//} glEnd();
 
 	for (auto object : objects)
 	{
@@ -322,41 +323,57 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		break;
 
 
-	case ADD_TABLE:
+	case K_ADD_TABLE:
 		objects.push_back(Model3D::SimpleTable());
 		consoleLog(string("Mesa adicionada na posiçao ").append(to_string(objects.size() - 1)));
 		break;
 
-	case ADD_HOME:
+	case K_ADD_HOME:
 		objects.push_back(Model3D::Home());
 		consoleLog(string("Casa adicionada na posiçao ").append(to_string(objects.size() - 1)));
 		break;
+	case K_ADD_BOX:
+		objects.push_back(Model3D::Box(Vetor3D(0,0,0), Vetor3D(1,1,1)));
+		consoleLog(string("Caixa adicionada na posiçao ").append(to_string(objects.size() - 1)));
+		break;
+	case K_ADD_PYRAMID:
+		objects.push_back(Model3D::Pyramid());
+		consoleLog(string("Pirâmide adicionada na posiçao ").append(to_string(objects.size() - 1)));
+		break;
+	case K_ADD_CAMERA_MODEL:
+		objects.push_back(Model3D::Camera());
+		consoleLog(string("Modelo 3D de câmera adicionada na posiçao ").append(to_string(objects.size() - 1)));
+		break;
 
-	case NEXT_OBJ:
+	case K_NEXT_OBJ:
 		
 		selectNextObject();
 		consoleLog(string("Objecto ").append(to_string(currentIndex)).append(" selecionado"));
 		break;
-	case PREVIOUS_OBJ:
+	case K_PREVIOUS_OBJ:
 		selectPreviousObject();
 		consoleLog(string("Objecto ").append(to_string(currentIndex)).append(" selecionado"));
 		break;
-
-	case DESELECT:
+	case K_REMOVE_OBJ: 
 	{
-		auto current = getSelectedObject();
-		if (current != nullptr)
+		auto currentIndex = deselect();
+		if (currentIndex > 0)
 		{
-			current->setSelected(false);
-			glutGUI::trans_obj = false;
-
+			objects.erase(objects.begin() + currentIndex - 1);
+			
 		}
 		break;
 	}
+
+	case K_DESELECT:
+	{
+		deselect();
+	}
 	
 
-	case TRANSFORM_OBJECT:
+	case K_TRANSFORM_OBJECT:
 	{
+		
 		auto current = getSelectedObject();
 		if (current != nullptr)
 		{
@@ -368,7 +385,7 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		}
 		break;
 	}
-	case TOGGLE_OBJECT_INFO:
+	case K_TOGGLE_OBJECT_INFO:
 	{
 		displayObjectInfos = !displayObjectInfos;
 		auto current = getSelectedObject();
@@ -399,6 +416,26 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 	default:
 		break;
 	}
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <returns>O index que foi desselecionado</returns>
+int deselect()
+{
+	auto current = getSelectedObject();
+	if (current != nullptr)
+	{
+		current->setSelected(false);
+		glutGUI::trans_obj = false;
+
+	}
+
+	auto deselectedIndex = currentIndex;
+	currentIndex = -1;
+	return deselectedIndex;
+	
 }
 
 

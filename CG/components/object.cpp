@@ -8,13 +8,12 @@ using namespace std;
 
 
 
-Object::Object()
-{
 
+Object::Object(string name)
+{
+    _name = name;
     _active = true;
     _scale = Vetor3D(1.f, 1.f, 1.f);
-
-
 }
 
 Object::~Object() {
@@ -29,7 +28,7 @@ void Object::render()
 {
     if (!_active)
         return;
-    if (_selected)
+    if (_selected && !_selectedByParent)
         mouseInput();
 
     glPushMatrix();
@@ -41,7 +40,7 @@ void Object::render()
         glTranslatef(_position.x, _position.y, _position.z);
         glRotatef(_rotation.x, 1,0,0);
         glRotatef(_rotation.y, 0, 1, 0);
-        glRotatef(_position.z, 0, 0, 1);
+        glRotatef(_rotation.z, 0, 0, 1);
         GUI::drawOrigin(true || _drawOriginSize);
         glScalef(_scale.x, _scale.y, _scale.z);
 
@@ -49,12 +48,18 @@ void Object::render()
         if (_showInfos)
             renderInfos();
 
-        if (_childs.size() > 0)
-            for (auto child : _childs)
+        if (_children.size() > 0)
+            for (auto child : _children)
                 child->render();
 
     } glPopMatrix();
 
+
+}
+
+void Object::consoleLog(string text)
+{
+    cout << _name << ": " << text << endl;
 
 }
 
@@ -92,10 +97,11 @@ bool Object::isSelected()
     return _selected;
 }
 
-void Object::setSelected(bool value)
+void Object::setSelected(bool value, bool selectedByParent)
 {
 
-    if (value)
+    _selectedByParent = selectedByParent;
+    if (value && !_selectedByParent)
     {
         glutGUI::ax = _rotation.x;
         glutGUI::ay = _rotation.y;
@@ -112,6 +118,8 @@ void Object::setSelected(bool value)
     }
 
     _selected = value;
+    for (auto child : _children)
+        child->setSelected(value, true);
 }
 
 string Object::serialize() {
