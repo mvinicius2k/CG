@@ -4,11 +4,13 @@
 #include <iostream>
 #include "bib/Camera.h"
 #include "gui_glut/gui.h"
-#include "components/object.h"
+#include "objects/object.h"
 #include <vector>
-#include "components/model3d.h"
+#include "objects/model3d.h"
 #include "utils/mouse.h"
 #include "main.h"
+#include "objects/camera3D.h"
+#include "utils/save.h"
 
 
 
@@ -21,7 +23,12 @@ using namespace std;
 
 
 auto objects = vector<Object*>();
+auto cameras = vector<Camera3D*>{
+	new Camera3D(Vetor3D(-2,1,0),Vetor3D(0,0,0)),
+	new Camera3D(Vetor3D(-22,1,0),Vetor3D(0,0,0))
+};
 int currentIndex = -1;
+int currentCam = -1;
 bool displayObjectInfos = false;;
 
 
@@ -254,7 +261,7 @@ void selectPreviousObject()
 
 void init()
 {
-
+	objects.insert(objects.end(), cameras.begin(), cameras.end());
 }
 
 void desenha()
@@ -328,7 +335,7 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		consoleLog(string("Mesa adicionada na posiçao ").append(to_string(objects.size() - 1)));
 		break;
 
-	case K_ADD_HOME:
+	case K_ADD_HOUSE:
 		objects.push_back(Model3D::Home());
 		consoleLog(string("Casa adicionada na posiçao ").append(to_string(objects.size() - 1)));
 		break;
@@ -354,6 +361,41 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		selectPreviousObject();
 		consoleLog(string("Objecto ").append(to_string(currentIndex)).append(" selecionado"));
 		break;
+	case K_NEXT_CAM:
+	{
+		
+
+		bool founded = false;
+
+		for (int i = currentCam+1; i < objects.size(); i++)
+		{
+			auto camera = static_cast<Camera3D*>(objects[i]);
+			if (camera != nullptr)
+			{
+				camera->use();
+				founded = true;
+				currentCam = i;
+				break;
+			}
+		}
+		
+		if (!founded)
+		{
+			currentCam = -1;
+			consoleLog("Não há câmeras");
+
+		}
+
+		break;
+
+	}
+
+	case K_DEFAULT_CAM: 
+	{
+		Camera3D::UseDefaultCam();
+		currentCam = -1;
+		break;
+	}
 	case K_REMOVE_OBJ: 
 	{
 		auto currentIndex = deselect();
@@ -393,6 +435,26 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 			current->_showInfos = displayObjectInfos;
 		consoleLog(string("Mostrar informações do objeto: ")
 			.append(to_string(displayObjectInfos)));
+
+		break;
+	}
+
+	case K_SAVE_SCENE:
+	{
+
+		auto allObjectsStr = stringstream();
+
+		for (auto object : objects)
+		{
+			if(dynamic_cast<Camera3D*>(object) == nullptr)
+				allObjectsStr << object->serialize() << endl;;
+		}
+
+		Save::save(SAVE_FILENAME, allObjectsStr.str());
+
+
+
+		break;
 	}
 		
 		//case 'w':

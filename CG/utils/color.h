@@ -2,10 +2,11 @@
 #define COLOR_H
 #include <Windows.h>
 #include <random>
+#include "serializable.h"
 
 using namespace std;
 
-class Color
+class Color : Serializable<Color>
 {
 private:
     static float get_random()
@@ -27,6 +28,14 @@ public:
     Color(float r, float g, float b, float a);
     Color();
     ~Color();
+
+    
+
+    // Herdado por meio de Serializable
+    virtual string serialize() override;
+
+    virtual Color* deserialize(std::string& str);
+
 };
 
 #endif // COLOR_H

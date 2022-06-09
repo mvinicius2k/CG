@@ -3,6 +3,8 @@
 #include <glut.h>
 #include <string>
 #include "../bib/Vetor3D.h"
+#include <vector>
+#include "material.h"
 
 using namespace std;
 class Strings
@@ -30,5 +32,27 @@ public:
 			.append(")");
 			
 	}
+
+	static string Vector3DToString(vector<Vetor3D>& vectors)
+	{
+		auto str = string("[");
+		for (auto vector : vectors)
+			str.append(Vector3DToString(vector)).append(", ");
+
+		return str.append("]");
+
+	}
+	
+	static string MaterialsToString(vector<Material*> materials)
+	{
+		auto str = string("[");
+		for (auto material : materials)
+			str.append(material->serialize()).append(", ");
+
+		return str.append("]");
+
+	}
+
+	
 };
 

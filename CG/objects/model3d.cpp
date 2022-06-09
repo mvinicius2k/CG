@@ -2,6 +2,9 @@
 #include <vector>
 #include "../gui_glut/gui.h"
 #include <limits>
+#include <string>
+#include <sstream>
+#include "../utils/strings.h"
 using namespace std;
 
 
@@ -94,7 +97,16 @@ void Model3D::addBox(Vetor3D min, Vetor3D max)
 }
 
 string Model3D::serialize() {
-	return ""; 
+	auto object = stringstream();
+	object << typeid(Model3D).name() << "{" << endl
+		<< NAMEOF(_mode) << "=" << to_string(_mode) << endl
+		<< NAMEOF(_lines) << "=" << Strings::Vector3DToString(_lines) << endl
+		<< NAMEOF(_normals) << "=" << Strings::Vector3DToString(_normals) << endl
+		<< NAMEOF(_materials) << "=" << Strings::MaterialsToString(_materials) << endl
+		<< Object::serialize() << endl
+		<< "}";
+
+	return object.str();
 }
 
 void Model3D::centralize()
