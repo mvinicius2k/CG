@@ -148,13 +148,12 @@ string Object::serialize()
 
 
 
-    string childrenString("[");
-    for(auto child : _children)
-        childrenString.append(child->serialize()).append(",");
-    childrenString.append("]");
+    stringstream childrenString;
+    for (auto child : _children)
+        childrenString << child->serialize();
 
     auto object = stringstream();
-    object << typeid(Object).name() << "{" << endl
+    object << typeid(Object).name() << endl
         << NAMEOF(_active) << "=" << to_string(_active) << endl
         << NAMEOF(_disableRotation) << "=" << to_string(_disableRotation) << endl
         << NAMEOF(_disableTranslate) << "=" << to_string(_disableTranslate) << endl
@@ -165,8 +164,8 @@ string Object::serialize()
         << NAMEOF(_position) << "=" << Strings::Vector3DToString(_position) << endl
         << NAMEOF(_rotation) << "=" << Strings::Vector3DToString(_rotation) << endl
         << NAMEOF(_scale) << "=" << Strings::Vector3DToString(_scale) << endl
-        << NAMEOF(_children) << "=" << childrenString << endl
-        << "}";
+        << NAMEOF(_children) << "=" << childrenString.str() << endl
+        ;
 
     return object.str();
 }

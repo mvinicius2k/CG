@@ -3,7 +3,6 @@
 #include "../bib/Vetor3D.h"
 
 
-
 class Material
 {
 public:
@@ -31,7 +30,6 @@ public:
    
 
 
-    // Herdado por meio de Serializable
     std::string serialize();
 
     static Material* Deserialize(std::string& str)

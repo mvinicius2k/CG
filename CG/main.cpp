@@ -11,10 +11,6 @@
 #include "objects/camera3D.h"
 #include "utils/persistence.h"
 
-#include <zpp_bits.h>
-
-
-
 using namespace std;
 
 
@@ -443,7 +439,7 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 	case K_SAVE_SCENE:
 	{
 
-		auto allObjectsStr = stringstream();
+		/*auto allObjectsStr = stringstream();
 
 		for (auto object : objects)
 		{
@@ -451,7 +447,7 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 				allObjectsStr << object->serialize() << endl;;
 		}
 
-		Persistence::Save(SAVE_FILENAME, allObjectsStr.str());
+		Persistence::Save(SAVE_FILENAME, allObjectsStr.str());*/
 
 
 
@@ -459,10 +455,10 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 	}
 	case K_LOAD_SCENE:
 	{
-		objects.clear();
+		/*objects.clear();
 		auto text = *Persistence::Load(SAVE_FILENAME);
 		auto object = new Object();
-		auto d = object->deserialize(text);
+		auto d = object->deserialize(text);*/
 		break;
 
 	}
@@ -519,8 +515,13 @@ int main(int argc, char** argv)
 {
 	SetConsoleOutputCP(CP_UTF8);
 
+	Color color = Color(1, 2, 3, 4);
 	
-	cout << "Hello World!" << endl;
+	cout << "Hello World! " << endl << &color;
+
+	
+
+
 	//GUI gui();
 	GUI gui = GUI(800, 600, desenha, teclado, glutGUI::defaultMouseButton, "CG", argc, argv);
 

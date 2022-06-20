@@ -1,10 +1,7 @@
-#ifndef OBJECT_H
-#define OBJECT_H
-
+#pragma once
 #include <iostream>
 #include <vector>
 #include "../bib/Vetor3D.h"
-#include "../utils/serialization.h"
 using namespace std;
 
 
@@ -46,7 +43,7 @@ protected:
 
 public:
     // Herdado por meio de Serializable
-    static Object* deserialize(std::string& str)
+    /*static Object* deserialize(std::string& str)
     {
         stringstream ss;
         string line;
@@ -113,8 +110,8 @@ public:
     }
 
 
-    
+    */
     string serialize();
 };
 
-#endif // OBJECT_H
+

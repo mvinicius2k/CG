@@ -1,4 +1,5 @@
 #include "color.h"
+#include <utils/serialization.h>
 
 using namespace std;
 Color::Color()
@@ -21,12 +22,12 @@ Color::~Color()
 string Color::serialize()
 {
 	auto object = stringstream();
-	object << typeid(Color).name() << "{" << endl
+	object << typeid(Color).name() << endl
 		<< NAMEOF(_r) << "=" << to_string(_r) << endl
 		<< NAMEOF(_g) << "=" << to_string(_g) << endl
 		<< NAMEOF(_b) << "=" << to_string(_b) << endl
-		<< NAMEOF(_a) << "=" << to_string(_a) << endl
-		<< "}";
+		<< NAMEOF(_a) << "=" << to_string(_a) << endl;
+		
 
 	return object.str();
 }

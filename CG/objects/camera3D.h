@@ -3,6 +3,7 @@
 #include "model3d.h"
 #include "../bib/Vetor3D.h"
 #include "../gui_glut/gui.h"
+#include <utils/serialization.h>
 
 class Camera3D : public Object
 {
@@ -31,6 +32,11 @@ public:
 	}
 	void use();
 	virtual void draw();
+	string serialize();
+	static Camera3D* Deserialize()
+	{
+
+	}
 	Camera3D(Vetor3D eye, Vetor3D aim, Vetor3D up = Vetor3D(0,1,0));
 	~Camera3D();
 };

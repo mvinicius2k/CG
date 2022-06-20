@@ -1,12 +1,11 @@
-#ifndef MODEL3D_H
-#define MODEL3D_H
+#pragma once
 #include "object.h"
 #include "../bib/Vetor3D.h"
-#include "../utils/material.h"
+#include <texture/material.h>
 #include <glut.h>
 #include <list>
 #include <vector>
-#include "../utils/color.h"
+#include <texture/color.h>
 
 
 using namespace std;
@@ -253,6 +252,5 @@ public:
     ~Model3D();
 };
 
-#endif // MODEL3D_H
 
 

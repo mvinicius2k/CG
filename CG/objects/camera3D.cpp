@@ -1,4 +1,6 @@
 #include "camera3D.h"
+#include <utils/strings.h>
+
 
 void Camera3D::use()
 {
@@ -18,6 +20,17 @@ void Camera3D::draw()
 	{
 		glutGUI::cam->e = _position;
 	}
+}
+
+string Camera3D::serialize()
+{
+	auto object = stringstream();
+	object << typeid(Camera3D).name() << endl
+		<< NAMEOF(_aim) << "=" << Strings::Vector3DToString(_aim) << endl
+		<< NAMEOF(_up) << "=" << Strings::Vector3DToString(_up) << endl
+		<< Object::serialize() << endl
+		;
+	return object.str();
 }
 
 

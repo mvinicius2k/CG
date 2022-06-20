@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include "../bib/Vetor3D.h"
-#include "material.h"
 
 class Strings
 {
@@ -32,22 +31,13 @@ public:
 			
 	}
 
-	static ::string Vector3DToString(vector<Vetor3D>& vectors)
-	{
-		auto str = std::string("[");
-		for (auto vector : vectors)
-			str.append(Vector3DToString(vector)).append(", ");
 
-		return str.append("]");
-
-	}
-	
 	static std::string MaterialsToString(vector<Material*> materials)
 	{
 		
 		auto str = std::string("[");
-		for (auto material : materials)
-			str.append(material->serialize()).append(", ");
+		/*for (auto material : materials)
+			str.append(material->serialize()).append(", ");*/
 
 		return str.append("]");
 

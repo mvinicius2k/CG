@@ -36,13 +36,13 @@ public:
 		
 	}
 
-	static string* Load(string namefile)
+	static vector<string>* Load(string namefile)
 	{
 		auto path = GetPath(namefile);
 		ifstream file;
 		file.open(path);
 
-		auto input = stringstream();
+		auto input = new vector<string>();
 
 		PrintCurrentSaveFiles();
 
@@ -53,14 +53,17 @@ public:
 			return nullptr;
 		}
 
+
+
+
 		if (file.is_open())
 		{
 			string line;
 			while (getline(file, line))
-				input << line << endl;  
+				input->push_back(line);
 		}
-		auto str = input.str();
-		return &str;
+		
+		return input;
 
 	}
 	static void PrintCurrentSaveFiles()
