@@ -1,15 +1,12 @@
-#ifndef COLOR_H
-#define COLOR_H
+#pragma once
 #include <Windows.h>
 #include <random>
-#include "serializable.h"
 
-using namespace std;
 
-class Color : Serializable<Color>
+class Color
 {
 private:
-    static float get_random()
+    static float GetRandom()
     {
         static std::default_random_engine e;
         static std::uniform_real_distribution<> dis(0, 1); // rage 0 - 1
@@ -19,7 +16,7 @@ public:
     float _r,_g,_b,_a;
     static Color Random()
     {
-        auto color = Color(get_random(), get_random(), get_random(), 1.f);
+        auto color = Color(GetRandom(), GetRandom(), GetRandom(), 1.f);
         return color;
     }
     static Color White() {
@@ -27,15 +24,20 @@ public:
     }
     Color(float r, float g, float b, float a);
     Color();
-    ~Color();
+    ~Color();   
 
-    
 
-    // Herdado por meio de Serializable
-    virtual string serialize() override;
 
-    virtual Color* deserialize(std::string& str);
+
+    std::string serialize();
+
+    static Color* Deserialize(std::string& str)
+    {
+        return nullptr;
+    }
+
+
+    // Herdado por meio de Base
 
 };
 
-#endif // COLOR_H

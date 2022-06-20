@@ -1,15 +1,14 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#pragma once
 #include "color.h"
 #include "../bib/Vetor3D.h"
-#include "serializable.h"
 
-using namespace std;
 
-class Material : Serializable<Material>
+
+class Material
 {
 public:
     Color _color ;
+    
     bool _especular;
     
     static Material* Default()
@@ -33,10 +32,12 @@ public:
 
 
     // Herdado por meio de Serializable
-    virtual string serialize() override;
+    std::string serialize();
 
-    virtual Material* deserialize(std::string& str);
+    static Material* Deserialize(std::string& str)
+    {
+        return nullptr;
+    }
 
 };
 
-#endif // MATERIAL_H

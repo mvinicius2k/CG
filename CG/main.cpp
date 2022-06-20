@@ -7,10 +7,11 @@
 #include "objects/object.h"
 #include <vector>
 #include "objects/model3d.h"
-#include "utils/mouse.h"
 #include "main.h"
 #include "objects/camera3D.h"
-#include "utils/save.h"
+#include "utils/persistence.h"
+
+#include <zpp_bits.h>
 
 
 
@@ -450,13 +451,21 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 				allObjectsStr << object->serialize() << endl;;
 		}
 
-		Save::save(SAVE_FILENAME, allObjectsStr.str());
+		Persistence::Save(SAVE_FILENAME, allObjectsStr.str());
 
 
 
 		break;
 	}
-		
+	case K_LOAD_SCENE:
+	{
+		objects.clear();
+		auto text = *Persistence::Load(SAVE_FILENAME);
+		auto object = new Object();
+		auto d = object->deserialize(text);
+		break;
+
+	}
 		//case 'w':
 		//    esferaPosY += 0.2;
 		//    break;

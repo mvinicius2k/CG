@@ -4,7 +4,7 @@
 #include "../gui_glut/gui.h"
 #include <string>
 #include <sstream>
-#include "../utils/serializable.h"
+#include "../utils/serialization.h"
 #include "../utils/strings.h"
 using namespace std;
 
@@ -23,36 +23,7 @@ Object::~Object() {
 
 }
 
-Object* Object::deserialize(std::string& str)
-{
-    stringstream ss;
-    string line;
 
-    int insideScope = 0;
-    while (getline(ss, line, '\n'))
-    {
-
-        if (Serializable::lineIsObject(line, typeid(Object).name()))
-            insideScope++;
-
-        if (insideScope > 0)
-        {
-            if (auto v = Serializable::getValue(line, NAMEOF(_active)))
-            {
-                _active = Strings::ToBool(*v);
-                continue;
-            }
-            if (auto v = Serializable::getValue(line, NAMEOF(_disableRotation)))
-            {
-                _disableRotation = Strings::ToBool(*v);
-                continue;
-            }
-
-        }
-        
-
-    }
-}
 
 void Object::draw()
 {

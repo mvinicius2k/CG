@@ -4,12 +4,12 @@
 #include <iostream>
 #include <vector>
 #include "../bib/Vetor3D.h"
-#include "../utils/serializable.h"
+#include "../utils/serialization.h"
 using namespace std;
 
 
 
-class Object : Serializable<Object>
+class Object
 {
 private:
     
@@ -34,8 +34,6 @@ protected:
     bool isSelected();
     void setSelected(bool value, bool selectedByParent = false);
 
-    template<typename  T>
-    T* deserialize(string str);
     void render();
     void consoleLog(string text);
 
@@ -46,9 +44,77 @@ protected:
     Object(string name = "Novo Objeto");
     ~Object();
 
+public:
     // Herdado por meio de Serializable
-    virtual Object* deserialize(std::string& str);
-    virtual string serialize();
+    static Object* deserialize(std::string& str)
+    {
+        stringstream ss;
+        string line;
+
+        int state = 0;
+        auto newObj = Object();
+
+        stringstream ss(str);
+        vector<string> result;
+
+        while (ss.good())
+        {
+            string substr;
+            getline(ss, substr, '\n');
+            result.push_back(substr);
+        }
+
+        int cont = 0;
+        for (auto & line : result)
+        {
+            if (Serialization::LineIsObject(line, typeid(Object).name()))
+                state = 1;
+
+            if (state == 1)
+            {
+                if (Serialization::TryAssing(line, NAMEOF(_active), &newObj._active))
+                    continue;
+                if (Serialization::TryAssing(line, NAMEOF(_disableRotation), &newObj._disableRotation))
+                    continue;
+                if (Serialization::TryAssing(line, NAMEOF(_disableScale), &newObj._disableScale))
+                    continue;
+                if (Serialization::TryAssing(line, NAMEOF(_disableTranslate), &newObj._disableTranslate))
+                    continue;
+                if (Serialization::TryAssing(line, NAMEOF(_position), &newObj._position))
+                    continue;
+                if (Serialization::TryAssing(line, NAMEOF(_rotation), &newObj._rotation))
+                    continue;
+                if (Serialization::TryAssing(line, NAMEOF(_sacle), &newObj._scale))
+                    continue;
+                if (Serialization::TryAssing(line, NAMEOF(_name), &newObj._name))
+                    continue;
+                
+                string* output;
+                if (Serialization::TryGetValue(line, NAMEOF(_children), output))
+                {
+                    
+                    state = 2;
+                }
+
+
+            }
+
+            if (state == 2)
+            {
+                auto it = result.begin() + cont;
+                auto child = Model3D::Deserialize(it);
+            }
+
+            cont++;
+        }
+
+
+        return nullptr;
+    }
+
+
+    
+    string serialize();
 };
 
 #endif // OBJECT_H

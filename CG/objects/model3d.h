@@ -238,7 +238,15 @@ public:
 		return body;
 	}
     
-    virtual string serialize();
+    string serialize();
+	static Model3D* deserialize(string& str)
+	{
+		return nullptr;
+	}
+	static Model3D* Deserialize(vector<string>::iterator& it)
+	{
+
+	}
 	
 	virtual void draw();
 	Model3D(GLenum mode, string name = "Modelo 3D");

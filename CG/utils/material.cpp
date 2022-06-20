@@ -1,5 +1,8 @@
 #include "material.h"
 #include <sstream>
+
+using namespace std;
+
 Material::Material(Color color, bool especular)
 {
 	_color = color;
@@ -7,10 +10,7 @@ Material::Material(Color color, bool especular)
 }
 
 
-Material* Material::deserialize(std::string str)
-{
-	return nullptr;
-}
+
 
 string Material::serialize()
 {

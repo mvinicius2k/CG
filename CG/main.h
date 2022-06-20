@@ -13,7 +13,7 @@ static inline const char K_NEXT_CAM = 'c';
 static inline const char K_DEFAULT_CAM = 'v';
 
 static inline const char K_SAVE_SCENE = 'S';
-static inline const char K_RELOAD_SCENE = 'R';
+static inline const char K_LOAD_SCENE = 'L';
 
 static inline const char K_TOGGLE_OBJECT_INFO = 'i';
 static inline const char K_DESELECT = '\'';

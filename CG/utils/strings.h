@@ -2,15 +2,14 @@
 #include <Windows.h>
 #include <glut.h>
 #include <string>
-#include "../bib/Vetor3D.h"
 #include <vector>
+#include "../bib/Vetor3D.h"
 #include "material.h"
 
-using namespace std;
 class Strings
 {
 public:
-	static void DrawString(float x, float y, float z, string text)
+	static void DrawString(float x, float y, float z, std::string text)
 	{
 		glRasterPos3f(x, y, z);
 
@@ -21,9 +20,9 @@ public:
 		
 	}
 
-	static string Vector3DToString(Vetor3D vector)
+	static std::string Vector3DToString(Vetor3D vector)
 	{
-		return string("(")
+		return std::string("(")
 			.append(to_string(vector.x))
 			.append("; ")
 			.append(to_string(vector.y))
@@ -33,9 +32,9 @@ public:
 			
 	}
 
-	static string Vector3DToString(vector<Vetor3D>& vectors)
+	static ::string Vector3DToString(vector<Vetor3D>& vectors)
 	{
-		auto str = string("[");
+		auto str = std::string("[");
 		for (auto vector : vectors)
 			str.append(Vector3DToString(vector)).append(", ");
 
@@ -43,9 +42,10 @@ public:
 
 	}
 	
-	static string MaterialsToString(vector<Material*> materials)
+	static std::string MaterialsToString(vector<Material*> materials)
 	{
-		auto str = string("[");
+		
+		auto str = std::string("[");
 		for (auto material : materials)
 			str.append(material->serialize()).append(", ");
 
