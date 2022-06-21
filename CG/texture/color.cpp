@@ -1,4 +1,4 @@
-#include "color.h"
+#include <texture/color.h>
 #include <utils/serialization.h>
 
 using namespace std;
@@ -30,6 +30,19 @@ string Color::serialize()
 		
 
 	return object.str();
+}
+
+Color* Color::deserialize(std::vector<std::string>::iterator& lines)
+{
+    if (Serialization::LineIsObject(*lines++, *this))
+    {
+        _r = Serialization::GetFloat(*lines++, NAMEOF(_r), _r);
+        _g = Serialization::GetFloat(*lines++, NAMEOF(_g), _g);
+        _b = Serialization::GetFloat(*lines++, NAMEOF(_b), _b);
+        _a = Serialization::GetFloat(*lines++, NAMEOF(_a), _a);
+    }
+
+    return this;
 }
 
 

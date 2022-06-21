@@ -59,8 +59,11 @@ public:
 		if (file.is_open())
 		{
 			string line;
-			while (getline(file, line))
-				input->push_back(line);
+			while (getline(file, line)) 
+			{
+				if(!line.empty())
+					input->push_back(line);
+			}
 		}
 		
 		return input;

@@ -97,17 +97,7 @@ void Model3D::addBox(Vetor3D min, Vetor3D max)
 	
 }
 
-string Model3D::serialize() {
-	auto object = stringstream();
-	object << typeid(Model3D).name() << endl
-		<< NAMEOF(_mode) << "=" << to_string(_mode) << endl
-		<< NAMEOF(_lines) << "=" << Strings::Vector3DToString(_lines) << endl
-		<< NAMEOF(_normals) << "=" << Strings::Vector3DToString(_normals) << endl
-		<< NAMEOF(_materials) << "=" << Strings::MaterialsToString(_materials) << endl
-		<< Object::serialize() << endl
-		;
-	return object.str();
-}
+
 
 void Model3D::centralize()
 {
@@ -218,5 +208,53 @@ Model3D::Model3D(GLenum mode, string name) : Object(name)
 Model3D::~Model3D() 
 {
 	
+}
+
+string Model3D::serialize()
+{
+	auto object = stringstream();
+	object << typeid(Model3D).name() << endl
+		<< NAMEOF(_mode) << "=" << to_string(_mode) << endl
+		<< NAMEOF(_lines) << "=" << Serialization::Vectors3DToString(_lines) << endl
+		<< NAMEOF(_normals) << "=" << Serialization::Vectors3DToString(_normals) << endl
+		<< NAMEOF(_materials) << "=" << Serialization::MaterialsToString(_materials) << endl
+		<< Object::serialize();
+	;
+	return object.str();
+}
+
+Model3D* Model3D::deserialize(std::vector<std::string>::iterator& lines)
+{
+
+	if (Serialization::LineIsObject(*lines++, *this))
+	{
+		_mode = Serialization::GetInt(*lines++, NAMEOF(_mode), _mode);
+
+		lines++;
+		while (!Serialization::EndOfArray(*lines)) 
+		{
+			auto line = Serialization::GetVetor3D(*lines++);
+			_lines.push_back(line);
+		}
+		lines += 2; //pulando o '] e definição'
+		while (!Serialization::EndOfArray(*lines))
+		{
+			auto normal = Serialization::GetVetor3D(*lines++);
+			_normals.push_back(normal);
+		}
+		lines += 2; //pulando o '] e definição'
+		while (!Serialization::EndOfArray(*lines))
+		{
+			
+			auto material = new Material();
+			material->deserialize(lines);
+			_materials.push_back(material);
+		}
+		lines++; //pulando ']'
+		Object::deserialize(lines);
+
+	}
+
+	return this;
 }
 

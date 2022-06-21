@@ -1,9 +1,9 @@
 #pragma once
 #include <Windows.h>
 #include <random>
+#include <utils/serializable.h>
 
-
-class Color
+class Color : Serializable<Color>
 {
 private:
     static float GetRandom()
@@ -29,15 +29,9 @@ public:
 
 
 
-    std::string serialize();
 
-    static Color* Deserialize(std::string& str)
-    {
-        return nullptr;
-    }
-
-
-    // Herdado por meio de Base
+    virtual std::string serialize() override;
+    virtual Color* deserialize(std::vector<std::string>::iterator& lines) override;
 
 };
 

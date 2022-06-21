@@ -25,6 +25,7 @@ Object::~Object() {
 
 
 
+
 void Object::draw()
 {
 }
@@ -145,13 +146,12 @@ void Object::setSelected(bool value, bool selectedByParent)
 
 string Object::serialize() 
 {
-
-
-
     stringstream childrenString;
+    childrenString << "[" << endl;
+    int i = 0;
     for (auto child : _children)
         childrenString << child->serialize();
-
+    childrenString << "]";
     auto object = stringstream();
     object << typeid(Object).name() << endl
         << NAMEOF(_active) << "=" << to_string(_active) << endl
@@ -159,7 +159,6 @@ string Object::serialize()
         << NAMEOF(_disableTranslate) << "=" << to_string(_disableTranslate) << endl
         << NAMEOF(_disableScale) << "=" << to_string(_disableScale) << endl
         << NAMEOF(_drawOrigin) << "=" << to_string(_drawOrigin) << endl
-        << NAMEOF(_originSize) << "=" << to_string(_originSize) << endl
         << NAMEOF(_name) << "=" << _name << endl
         << NAMEOF(_position) << "=" << Strings::Vector3DToString(_position) << endl
         << NAMEOF(_rotation) << "=" << Strings::Vector3DToString(_rotation) << endl
@@ -168,4 +167,50 @@ string Object::serialize()
         ;
 
     return object.str();
+}
+
+void qualquer(std::string& str)
+{
+
+}
+Object* Object::deserialize(std::vector<std::string>::iterator& lines)
+{
+    
+    if (Serialization::LineIsObject(*lines++, *this)) 
+    {
+        _active = Serialization::GetBool(*lines++, NAMEOF(_active), _active);
+        _disableRotation = Serialization::GetBool(*lines++, NAMEOF(_disableRotation), _disableRotation);
+        _disableTranslate = Serialization::GetBool(*lines++, NAMEOF(_disableTranslate), _disableTranslate);
+        _disableScale = Serialization::GetBool(*lines++, NAMEOF(_disableScale), _disableScale);
+        _drawOrigin = Serialization::GetBool(*lines++, NAMEOF(_drawOrigin), _drawOrigin);
+        _name = Serialization::GetString(*lines++, NAMEOF(_name), _name);
+        _position = Serialization::GetVetor3D(*lines++, NAMEOF(_position), _position);
+        _rotation = Serialization::GetVetor3D(*lines++, NAMEOF(_rotation), _rotation);
+        _scale = Serialization::GetVetor3D(*lines++, NAMEOF(_scale), _scale);
+        lines++; //pulando definição
+        while (!Serialization::EndOfArray(*lines)) 
+        {
+            Object* child = nullptr;
+            switch (Serialization::GetType(*lines))
+            {
+            case EModel3D:
+                child = new Model3D();
+                break;
+            case ECamera3D:
+                child = new Camera3D();
+                break;
+            default:
+                child = new Object();
+                break;
+            }
+            _children.push_back(child->deserialize(lines));
+
+        }
+
+        lines++; //avançando ']'
+    }
+    
+    
+
+    return this;
 }

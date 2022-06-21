@@ -10,6 +10,7 @@
 #include "main.h"
 #include "objects/camera3D.h"
 #include "utils/persistence.h"
+#include "utils/serialization.h"
 
 using namespace std;
 
@@ -439,15 +440,16 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 	case K_SAVE_SCENE:
 	{
 
-		/*auto allObjectsStr = stringstream();
+		auto allObjectsStr = stringstream();
 
 		for (auto object : objects)
 		{
-			if(dynamic_cast<Camera3D*>(object) == nullptr)
-				allObjectsStr << object->serialize() << endl;;
+			allObjectsStr << object->serialize();
+			
+
 		}
 
-		Persistence::Save(SAVE_FILENAME, allObjectsStr.str());*/
+		Persistence::Save(SAVE_FILENAME, allObjectsStr.str());
 
 
 
@@ -455,10 +457,31 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 	}
 	case K_LOAD_SCENE:
 	{
-		/*objects.clear();
+		objects.clear();
 		auto text = *Persistence::Load(SAVE_FILENAME);
-		auto object = new Object();
-		auto d = object->deserialize(text);*/
+		auto it = text.begin();
+		objects.clear();
+
+		while (it != text.end()) 
+		{
+			int distance = std::distance(text.begin(), it);
+			cout << "Deserializando objeto em " << distance << endl;
+
+			if (Serialization::GetType(*it) == EModel3D) 
+			{
+				auto obj = new Model3D();
+				objects.push_back(obj->deserialize(it));
+
+			}
+			else if(Serialization::GetType(*it) == ECamera3D)
+			{
+				auto obj = new Camera3D();
+				objects.push_back(obj->deserialize(it));
+			}
+
+		}
+
+		cout << objects.size() << " carregados com sucesso (ou não)" << endl;
 		break;
 
 	}

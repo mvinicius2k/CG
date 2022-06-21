@@ -3,11 +3,12 @@
 #include "model3d.h"
 #include "../bib/Vetor3D.h"
 #include "../gui_glut/gui.h"
-#include <utils/serialization.h>
+
 
 class Camera3D : public Object
 {
 private:
+	inline static int Id = 0;
 	static inline auto defaultCam = glutGUI::cam;
 	static inline Camera3D* currentCam = nullptr;
 	bool used;
@@ -32,11 +33,9 @@ public:
 	}
 	void use();
 	virtual void draw();
-	string serialize();
-	static Camera3D* Deserialize()
-	{
-
-	}
-	Camera3D(Vetor3D eye, Vetor3D aim, Vetor3D up = Vetor3D(0,1,0));
+	virtual string serialize() override;
+	Camera3D(Vetor3D eye = Vetor3D(0,0,0), Vetor3D aim = Vetor3D(1, 0, 0), Vetor3D up = Vetor3D(0, 1, 0));
 	~Camera3D();
+
+	virtual Camera3D* deserialize(std::vector<std::string>::iterator& lines) override;
 };

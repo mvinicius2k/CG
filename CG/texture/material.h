@@ -1,9 +1,10 @@
 #pragma once
-#include "color.h"
+#include <texture/color.h>
+#include <utils/serializable.h>
 #include "../bib/Vetor3D.h"
 
 
-class Material
+class Material : Serializable<Material>
 {
 public:
     Color _color ;
@@ -23,19 +24,24 @@ public:
     {
         return new Material(Color::Random(), true);
     }
-    Material(Color color, bool especular);
+    Material(Color color = Color::Random(), bool especular = false);
 
     
 
    
 
 
-    std::string serialize();
 
     static Material* Deserialize(std::string& str)
     {
         return nullptr;
     }
+
+
+    // Herdado por meio de Serializable
+    virtual std::string serialize() override;
+
+    virtual Material* deserialize(std::vector<std::string>::iterator& lines) override;
 
 };
 

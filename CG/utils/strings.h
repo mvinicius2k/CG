@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include "../bib/Vetor3D.h"
+#include <texture/color.h>
+#include <texture/material.h>
 
 class Strings
 {
@@ -32,16 +34,6 @@ public:
 	}
 
 
-	static std::string MaterialsToString(vector<Material*> materials)
-	{
-		
-		auto str = std::string("[");
-		/*for (auto material : materials)
-			str.append(material->serialize()).append(", ");*/
-
-		return str.append("]");
-
-	}
 
 	
 };

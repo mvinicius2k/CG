@@ -74,7 +74,7 @@
     <LinkIncremental>true</LinkIncremental>
     <PublicIncludeDirectories>
     </PublicIncludeDirectories>
-    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\;$(ProjectDir)\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\lib\x86;$(ProjectDir)\lib;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
@@ -159,8 +159,8 @@
     <ClCompile Include="gui_glut\gui.cpp" />
     <ClCompile Include="gui_glut\OpenTextures.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="utils\color.cpp" />
-    <ClCompile Include="utils\material.cpp" />
+    <ClCompile Include="texture\color.cpp" />
+    <ClCompile Include="texture\material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -178,8 +178,11 @@
     <ClInclude Include="gui_glut\gui.h" />
     <ClInclude Include="gui_glut\OpenTextures.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="texture\color.h" />
+    <ClInclude Include="texture\material.h" />
     <ClInclude Include="utils\color.h" />
     <ClInclude Include="utils\persistence.h" />
+    <ClInclude Include="utils\serializable.h" />
     <ClInclude Include="utils\serialization.h" />
     <ClInclude Include="utils\strings.h" />
     <ClInclude Include="utils\material.h" />

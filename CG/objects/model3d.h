@@ -11,7 +11,8 @@
 using namespace std;
 
 class Model3D : public Object{
-
+private:
+	inline static int Id = 0;
 protected:
 	void addBox(Vetor3D min, Vetor3D max);
 
@@ -237,19 +238,15 @@ public:
 		return body;
 	}
     
-    string serialize();
-	static Model3D* deserialize(string& str)
-	{
-		return nullptr;
-	}
-	static Model3D* Deserialize(vector<string>::iterator& it)
-	{
+    virtual string serialize() override;
 
-	}
 	
 	virtual void draw();
-	Model3D(GLenum mode, string name = "Modelo 3D");
+	Model3D(GLenum mode = GL_TRIANGLES, string name = "Modelo 3D");
     ~Model3D();
+
+	// Herdado por meio de Serializable
+	virtual Model3D* deserialize(std::vector<std::string>::iterator& lines) override;
 };
 
 

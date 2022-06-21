@@ -2,11 +2,12 @@
 #include <iostream>
 #include <vector>
 #include "../bib/Vetor3D.h"
+#include <utils/serializable.h>
 using namespace std;
 
 
 
-class Object
+class Object : Serializable<Object>
 {
 private:
     
@@ -111,7 +112,13 @@ public:
 
 
     */
-    string serialize();
+
+
+    // Herdado por meio de Serializable
+    virtual std::string serialize() override;
+
+    virtual Object* deserialize(std::vector<std::string>::iterator& lines) override;
+
 };
 
 

@@ -1,6 +1,6 @@
 #include "camera3D.h"
 #include <utils/strings.h>
-
+#include <utils/serialization.h>
 
 void Camera3D::use()
 {
@@ -54,4 +54,17 @@ Camera3D::~Camera3D()
 {
 	UseDefaultCam();
 	delete _camModel;
+}
+
+Camera3D* Camera3D::deserialize(std::vector<std::string>::iterator& lines)
+{
+	if (Serialization::LineIsObject(*lines++, *this))
+	{
+		_aim = Serialization::GetVetor3D(*lines++, NAMEOF(_aim), _aim);
+		_up = Serialization::GetVetor3D(*lines++, NAMEOF(_up), _up);
+		
+		Object::deserialize(lines);
+	}
+
+	return this;
 }
