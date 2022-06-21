@@ -12,7 +12,7 @@
 
 enum ClassType
 {
-	EModel3D, ECamera3D
+	None, EModel3D, ECamera3D
 };
 class Serialization
 {
@@ -26,6 +26,7 @@ public:
 			return ECamera3D;
 		else
 			cout << "Linha " << line << " não é um objeto" << endl;
+		return None;
 	}
 
 	static string Vectors3DToString(vector<Vetor3D>& vectors)

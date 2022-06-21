@@ -6,6 +6,7 @@
 #include <sstream>
 #include "../utils/serialization.h"
 #include "../utils/strings.h"
+#include <utils/mouse.h>
 using namespace std;
 
 
@@ -47,7 +48,7 @@ void Object::render()
         glRotatef(_rotation.x, 1,0,0);
         glRotatef(_rotation.y, 0, 1, 0);
         glRotatef(_rotation.z, 0, 0, 1);
-        if(_drawOrigin)
+        if(_showInfos)
             GUI::drawOrigin(_originSize);
         glScalef(_scale.x, _scale.y, _scale.z);
 
@@ -87,25 +88,25 @@ void Object::mouseInput()
 {
     if (!_disableTranslate)
     {
-        _position.x = glutGUI::tx;
-        _position.y = glutGUI::ty;
-        _position.z = glutGUI::tz;
+        _position.x = Mouse::Step(glutGUI::tx);
+        _position.y = Mouse::Step(glutGUI::ty);
+        _position.z = Mouse::Step(glutGUI::tz);
 
     }
 
     if (!_disableRotation)
     {
-        _rotation.x = glutGUI::ax;
-        _rotation.y = glutGUI::ay;
-        _rotation.z = glutGUI::az;
+        _rotation.x = Mouse::Step(glutGUI::ax);
+        _rotation.y = Mouse::Step(glutGUI::ay);
+        _rotation.z = Mouse::Step(glutGUI::az);
 
     }
 
     if (!_disableScale)
     {
-        _scale.x = glutGUI::sx;
-        _scale.y = glutGUI::sy;
-        _scale.z = glutGUI::sz;
+        _scale.x = Mouse::Step(glutGUI::sx);
+        _scale.y = Mouse::Step(glutGUI::sy);
+        _scale.z = Mouse::Step(glutGUI::sz);
 
     }
 
@@ -158,7 +159,6 @@ string Object::serialize()
         << NAMEOF(_disableRotation) << "=" << to_string(_disableRotation) << endl
         << NAMEOF(_disableTranslate) << "=" << to_string(_disableTranslate) << endl
         << NAMEOF(_disableScale) << "=" << to_string(_disableScale) << endl
-        << NAMEOF(_drawOrigin) << "=" << to_string(_drawOrigin) << endl
         << NAMEOF(_name) << "=" << _name << endl
         << NAMEOF(_position) << "=" << Strings::Vector3DToString(_position) << endl
         << NAMEOF(_rotation) << "=" << Strings::Vector3DToString(_rotation) << endl
@@ -182,7 +182,6 @@ Object* Object::deserialize(std::vector<std::string>::iterator& lines)
         _disableRotation = Serialization::GetBool(*lines++, NAMEOF(_disableRotation), _disableRotation);
         _disableTranslate = Serialization::GetBool(*lines++, NAMEOF(_disableTranslate), _disableTranslate);
         _disableScale = Serialization::GetBool(*lines++, NAMEOF(_disableScale), _disableScale);
-        _drawOrigin = Serialization::GetBool(*lines++, NAMEOF(_drawOrigin), _drawOrigin);
         _name = Serialization::GetString(*lines++, NAMEOF(_name), _name);
         _position = Serialization::GetVetor3D(*lines++, NAMEOF(_position), _position);
         _rotation = Serialization::GetVetor3D(*lines++, NAMEOF(_rotation), _rotation);

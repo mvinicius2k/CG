@@ -181,6 +181,7 @@
     <ClInclude Include="texture\color.h" />
     <ClInclude Include="texture\material.h" />
     <ClInclude Include="utils\color.h" />
+    <ClInclude Include="utils\mouse.h" />
     <ClInclude Include="utils\persistence.h" />
     <ClInclude Include="utils\serializable.h" />
     <ClInclude Include="utils\serialization.h" />
