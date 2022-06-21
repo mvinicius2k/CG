@@ -16,7 +16,7 @@ public:
 
 		for (auto c : text)
 		{
-			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, c);
 		}
 		
 	}

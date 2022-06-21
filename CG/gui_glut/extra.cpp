@@ -421,7 +421,7 @@ void glutGUI::mouseMove(int x, int y) {
             cam->rotatey(x,last_x);
         }
         if (trans_obj) {
-            fator = 100.f;
+            fator = 10.f;
             dax = (y - last_y)/fator;
             day = (x - last_x)/fator;
             ax += dax;

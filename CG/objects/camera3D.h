@@ -31,11 +31,15 @@ public:
 			glutGUI::cam = defaultCam;
 		}
 	}
+	static Camera3D* GetCurrentCam()
+	{
+		return currentCam;
+	}
 	void use();
 	virtual void draw();
 	virtual string serialize() override;
 	Camera3D(Vetor3D eye = Vetor3D(0,0,0), Vetor3D aim = Vetor3D(1, 0, 0), Vetor3D up = Vetor3D(0, 1, 0));
 	~Camera3D();
-
+	void update();
 	virtual Camera3D* deserialize(std::vector<std::string>::iterator& lines) override;
 };

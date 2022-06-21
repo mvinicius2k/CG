@@ -48,13 +48,14 @@ void Object::render()
         glRotatef(_rotation.x, 1,0,0);
         glRotatef(_rotation.y, 0, 1, 0);
         glRotatef(_rotation.z, 0, 0, 1);
-        if(_showInfos)
+        if (ShowInfos && _selected && !_selectedByParent) 
+        {
             GUI::drawOrigin(_originSize);
-        glScalef(_scale.x, _scale.y, _scale.z);
-
-        draw();
-        if (_showInfos)
             renderInfos();
+        }
+        glScalef(_scale.x, _scale.y, _scale.z);
+        draw();
+            
 
         if (_children.size() > 0)
             for (auto child : _children)
@@ -86,6 +87,7 @@ void Object::renderInfos()
 
 void Object::mouseInput()
 {
+    
     if (!_disableTranslate)
     {
         _position.x = Mouse::Step(glutGUI::tx);
@@ -96,9 +98,9 @@ void Object::mouseInput()
 
     if (!_disableRotation)
     {
-        _rotation.x = Mouse::Step(glutGUI::ax);
-        _rotation.y = Mouse::Step(glutGUI::ay);
-        _rotation.z = Mouse::Step(glutGUI::az);
+        _rotation.x = Mouse::RotateStep(glutGUI::ax);
+        _rotation.y = Mouse::RotateStep(glutGUI::ay);
+        _rotation.z = Mouse::RotateStep(glutGUI::az);
 
     }
 
@@ -125,23 +127,28 @@ void Object::setSelected(bool value, bool selectedByParent)
     _selectedByParent = selectedByParent;
     if (value && !_selectedByParent)
     {
-        glutGUI::ax = _rotation.x;
-        glutGUI::ay = _rotation.y;
-        glutGUI::az = _rotation.z;
-
-        glutGUI::sx = _scale.x;
-        glutGUI::sy = _scale.y;
-        glutGUI::sz = _scale.z;
-
-        glutGUI::tx = _position.x;
-        glutGUI::ty = _position.y;
-        glutGUI::tz = _position.z;
+        syncGUI();
 
     }
 
     _selected = value;
     for (auto child : _children)
         child->setSelected(value, true);
+}
+
+void Object::syncGUI()
+{
+    glutGUI::ax = _rotation.x;
+    glutGUI::ay = _rotation.y;
+    glutGUI::az = _rotation.z;
+
+    glutGUI::sx = _scale.x;
+    glutGUI::sy = _scale.y;
+    glutGUI::sz = _scale.z;
+
+    glutGUI::tx = _position.x;
+    glutGUI::ty = _position.y;
+    glutGUI::tz = _position.z;
 }
 
 
@@ -169,10 +176,7 @@ string Object::serialize()
     return object.str();
 }
 
-void qualquer(std::string& str)
-{
 
-}
 Object* Object::deserialize(std::vector<std::string>::iterator& lines)
 {
     

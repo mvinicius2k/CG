@@ -2,6 +2,8 @@
 #include <utils/strings.h>
 #include <utils/serialization.h>
 
+
+
 void Camera3D::use()
 {
 	if (currentCam == nullptr)
@@ -13,6 +15,8 @@ void Camera3D::use()
 	currentCam = this;
 	_camModel->_active = false;
 }
+
+
 
 void Camera3D::draw()
 {
@@ -54,6 +58,14 @@ Camera3D::~Camera3D()
 {
 	UseDefaultCam();
 	delete _camModel;
+}
+
+void Camera3D::update()
+{
+	if (currentCam != nullptr)
+	{
+		glutGUI::cam->c = _aim;
+	}
 }
 
 Camera3D* Camera3D::deserialize(std::vector<std::string>::iterator& lines)

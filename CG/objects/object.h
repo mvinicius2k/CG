@@ -22,15 +22,21 @@ protected:
     bool _disableTranslate, _disableRotation, _disableScale;
 
 
-    public:
+public:
 
+    inline static float TranslateSensibility = 1.f;
+    inline static float RotataSensibility = 10.f;
+    inline static float ScaleSensibility = 1.f;
+    inline static bool ShowInfos = false;
     string _name;
     Vetor3D _position, _rotation, _scale;
-    bool _active, _showName, _showInfos;
-    float _originSize;
+    bool _active;
+    float _originSize = 1.f;
     vector<Object*> _children;
     bool isSelected();
     void setSelected(bool value, bool selectedByParent = false);
+
+    void syncGUI();
 
     void render();
     void consoleLog(string text);
