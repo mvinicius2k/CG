@@ -117,6 +117,7 @@ int deselect()
 
 void init()
 {
+	glClearColor(0, 0, 0, 1);
 	objects.insert(objects.end(), cameras.begin(), cameras.end());
 }
 
@@ -197,19 +198,30 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 	{
 		
 
+		Camera3D* camera = nullptr;
 		bool founded = false;
-
-		for (int i = currentCam+1; i < objects.size(); i++)
+		int i = currentCam;
+		int lastIndex = i;
+		int cont = 0;
+		do
 		{
-			auto camera = static_cast<Camera3D*>(objects[i]);
+			auto index = ++i % objects.size();
+			if (lastIndex == index)
+				cont++;
+			if (cont == 2)
+				break;
+
+			camera = dynamic_cast<Camera3D*>(objects[index]);
 			if (camera != nullptr)
 			{
+				cout << "Câmera " << index << endl;;
 				camera->use();
 				founded = true;
-				currentCam = i;
+				currentCam = index;
 				break;
 			}
-		}
+		} while (camera == nullptr);
+
 		
 		if (!founded)
 		{

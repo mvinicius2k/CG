@@ -135,6 +135,8 @@ void Model3D::centralize()
 
 void Model3D::draw()
 {
+	if (!_active)
+		return;
 	auto cycle = getCycleSize();
 
      

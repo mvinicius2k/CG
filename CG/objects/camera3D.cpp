@@ -1,9 +1,6 @@
 #include "camera3D.h"
 #include <utils/strings.h>
 #include <utils/serialization.h>
-
-
-
 void Camera3D::use()
 {
 	if (currentCam == nullptr)
@@ -14,6 +11,11 @@ void Camera3D::use()
 	glutGUI::cam = new CameraDistante(_position, _aim, _up);
 	currentCam = this;
 	_camModel->_active = false;
+
+	auto vetor = _aim;
+	vetor.normaliza();
+
+
 }
 
 
@@ -65,6 +67,7 @@ void Camera3D::update()
 	if (currentCam != nullptr)
 	{
 		glutGUI::cam->c = _aim;
+
 	}
 }
 
