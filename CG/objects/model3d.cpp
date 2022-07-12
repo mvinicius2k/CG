@@ -6,9 +6,20 @@
 #include <sstream>
 #include "../utils/strings.h"
 #include <utils/serialization.h>
+#include <scene/light.h>
 using namespace std;
 
 
+
+void Model3D::setShowShadow(bool value)
+{
+	_showShadow = value;
+}
+
+bool Model3D::isShowShadow()
+{
+	return _showShadow;
+}
 
 int Model3D::getCycleSize()
 {
@@ -258,5 +269,22 @@ Model3D* Model3D::deserialize(std::vector<std::string>::iterator& lines)
 	}
 
 	return this;
+}
+
+void Model3D::shadow()
+{
+	auto lightPosition = Light::GetPosition();
+	GLfloat lightData[] = {
+		lightPosition.x, lightPosition.y, lightPosition.z, (int) Light::GetKind()
+	};
+
+	GLfloat shadowMatrix[4][4];
+	GUI::shadowMatrix(shadowMatrix, Vetor3D(2, 2, 3), 1, lightData);
+
+	for (auto & point : Model3D::_lines)
+	{
+		//GUI::shadowMatrix(shadowMatrix, (GLFloat)_position, _normals[0], lightData);
+	}
+	
 }
 

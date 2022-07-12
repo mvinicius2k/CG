@@ -178,6 +178,7 @@
     <ClInclude Include="gui_glut\gui.h" />
     <ClInclude Include="gui_glut\OpenTextures.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="scene\light.h" />
     <ClInclude Include="texture\color.h" />
     <ClInclude Include="texture\material.h" />
     <ClInclude Include="utils\color.h" />

@@ -15,16 +15,20 @@ private:
 	inline static int Id = 0;
 protected:
 	void addBox(Vetor3D min, Vetor3D max);
+	bool _showShadow;
 
 public:
     vector<Vetor3D> _lines, _normals;
 	vector<Material*>  _materials;
     GLenum _mode;
-	
+	void setShowShadow(bool value);
+	bool isShowShadow();
 	
 
 	int getCycleSize();
 	void centralize();
+
+	
 
 	static Model3D* Home(float floorWidth = 7.f,float floorDepth = 10.f,float wallHeight = 2.8f,float peakRelativeHeight = .5f,	Material* wallMaterial = Material::Default(),
 		Material* ceilMaterial = Material::Default(),	bool centralize = true) 
@@ -241,6 +245,7 @@ public:
     virtual string serialize() override;
 
 	
+	void shadow();
 	virtual void draw();
 	Model3D(GLenum mode = GL_TRIANGLES, string name = "Modelo 3D");
     ~Model3D();
@@ -248,6 +253,4 @@ public:
 	// Herdado por meio de Serializable
 	virtual Model3D* deserialize(std::vector<std::string>::iterator& lines) override;
 };
-
-
 
