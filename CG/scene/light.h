@@ -1,5 +1,6 @@
 #pragma once
 #include <bib/Vetor3D.h>
+#include <vector>
 #include <gui_glut/gui.h>
 
 enum class LightKind
@@ -7,15 +8,21 @@ enum class LightKind
 	pontual = 1, infinity = 0
 };
 
+class ShadowedPlane
+{
+	Vetor3D _plane, _normal;
+};
+
 class Light
 {
 private:
 	inline static LightKind Kind = LightKind::pontual;
 public:
+	static vector<ShadowedPlane> Planes;
 
 
 
-	static Vetor3D GetPosition()
+	static Vetor3D GetPosition() 
 	{
 		return Vetor3D(glutGUI::lx, glutGUI::ly, glutGUI::lz);
 	}
@@ -36,6 +43,7 @@ public:
 		
 	}
 
+	
 	
 
 	

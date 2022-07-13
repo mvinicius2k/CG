@@ -7,6 +7,8 @@ static inline const char K_ADD_CAMERA_MODEL = '5';
 static inline const char K_ADD_CAMERA = '6';
 static inline const char K_CAMERA_LOOK_TO = 'b';
 static inline const char K_TRANSFORM_OBJECT = 't';
+static inline const char K_TOGGLE_SHADOW = 'ç';
+static inline const char K_TOGGLE_SHADOW_ALL = 'Ç';
 
 static inline const char K_NEXT_OBJ = 'd';
 static inline const char K_PREVIOUS_OBJ = 'a';
