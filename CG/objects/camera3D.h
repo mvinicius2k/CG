@@ -20,7 +20,7 @@ public:
 
 	Vetor3D _aim; //centro
 	Vetor3D _up;
-
+	virtual void setSelected(bool value, bool selectedByParent = false) override;
 
 	static void UseDefaultCam()
 	{

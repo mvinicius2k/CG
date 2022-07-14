@@ -19,11 +19,11 @@ protected:
     virtual void draw();
     bool _selected, _selectedByParent;
 
-    bool _disableTranslate, _disableRotation, _disableScale;
 
 
 public:
-
+    bool _disableShadow;
+    bool _disableTranslate, _disableRotation, _disableScale;
     inline static float TranslateSensibility = 1.f;
     inline static float RotataSensibility = 10.f;
     inline static float ScaleSensibility = 1.f;
@@ -34,7 +34,7 @@ public:
     float _originSize = 1.f;
     vector<Object*> _children;
     bool isSelected();
-    void setSelected(bool value, bool selectedByParent = false);
+    virtual void setSelected(bool value, bool selectedByParent = false);
 
     void syncGUI();
 

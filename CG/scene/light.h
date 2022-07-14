@@ -8,18 +8,14 @@ enum class LightKind
 	pontual = 1, infinity = 0
 };
 
-class ShadowedPlane
-{
-	Vetor3D _plane, _normal;
-};
+
 
 class Light
 {
 private:
-	inline static LightKind Kind = LightKind::pontual;
 public:
-	static vector<ShadowedPlane> Planes;
 
+	inline static LightKind Kind = LightKind::pontual;
 
 
 	static Vetor3D GetPosition() 
@@ -33,15 +29,7 @@ public:
 		glutGUI::lz = newPosition.z;
 	}
 
-	static LightKind GetKind()
-	{
-		return Kind;
-	}
-	static void SetKind(LightKind value)
-	{
-		Kind = value;
-		
-	}
+	
 
 	
 	

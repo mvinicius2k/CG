@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <sstream>
 #include <cmath>
+#include <GL/glew.h>
 #include <iostream>
 #include "bib/Camera.h"
 #include "gui_glut/gui.h"
@@ -13,15 +14,15 @@
 #include "utils/persistence.h"
 #include "utils/serialization.h"
 #include "utils/mouse.h"
+#include "scene/light.h"
+#include "utils/math.h"
+#include <objects/shadowedSurface.h>
 
 using namespace std;
 
 
-auto objects = vector<Object*>();
-auto cameras = vector<Camera3D*>{
-	new Camera3D(Vetor3D(-2,1,0),Vetor3D(0,0,0)),
-	new Camera3D(Vetor3D(-22,1,0),Vetor3D(0,0,0))
-};
+
+
 int currentIndex = -1;
 int currentCam = -1;
 
@@ -117,35 +118,76 @@ int deselect()
 
 void init()
 {
-	glClearColor(0, 0, 0, 1);
-	objects.insert(objects.end(), cameras.begin(), cameras.end());
+	glClearColor(0, .2f, 1.f, 1);
+	
+
 }
 
 void desenha()
 {
 	GUI::displayInit();
-
+	//glMatrixMode(GL_MODELVIEW);
 	if (!_initialized)
 	{
 		init();
 		_initialized = true;
 	}
 
+	glPushName(20);
+	glPopName();
 
-	
 
-
-	GUI::setLight(0, 3, 5, 4, true, false);
+	GUI::setLight(0, 0, 0, 0, true, false);
 
 	GUI::drawOrigin(0.5);
-
-	for (auto object : objects)
-	{
-		object->render();
-	}
-
-
+	renderObjects();
+	
 	GUI::displayEnd();
+}
+
+void renderObjects()
+{
+	int i = 0;
+	for (auto object : objects) 
+	{
+		glPushName(++i);
+		object->render();
+		glPopName();
+	}
+}
+
+int picking(GLint cursorX, GLint cursorY, int w, int h)
+{
+	int BUFSIZE = 512;
+	GLuint selectBuf[512];
+
+	GUI::pickingInit(cursorX, cursorY, w, h, selectBuf, BUFSIZE);
+	GUI::displayInit();
+	
+	renderObjects();
+	//GUI::drawCamera();
+	return GUI::pickingClosestName(selectBuf, BUFSIZE);
+}
+
+void mouse(int button, int state, int x, int y)
+{
+	GUI::mouseButtonInit(button, state, x, y);
+
+	// if the left button is pressed
+	if (button == GLUT_LEFT_BUTTON) {
+		// when the button is pressed
+		if (state == GLUT_DOWN) {
+			//picking
+			auto idSelected = picking(x, y, 5, 5);
+			cout << currentIndex << " selecionado" << endl;
+			if (idSelected != 0) {
+				deselect();
+				currentIndex = idSelected - 1;
+				objects[currentIndex]->setSelected(true);
+				glutGUI::lbpressed = false;
+			}
+		}
+	}
 }
 
 void teclado(unsigned char tecla, int mouseX, int mouseY)
@@ -160,6 +202,7 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		break;
 
 	case K_ADD_TABLE:
+		
 		objects.push_back(Model3D::SimpleTable());
 		consoleLog(string("Mesa adicionada na posiçao ").append(to_string(objects.size() - 1)));
 		break;
@@ -176,6 +219,7 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		objects.push_back(Model3D::Pyramid());
 		consoleLog(string("Pirâmide adicionada na posiçao ").append(to_string(objects.size() - 1)));
 		break;
+		glPushName(objects.size() + 1);
 	case K_ADD_CAMERA_MODEL:
 		objects.push_back(Model3D::Camera());
 		consoleLog(string("Modelo 3D de câmera adicionada na posiçao ").append(to_string(objects.size() - 1)));
@@ -184,6 +228,36 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		objects.push_back(new Camera3D());
 		consoleLog(string("Câmera adicionada na posição ").append(to_string(objects.size() - 1)));
 		break;
+	case K_ADD_SHADOWED_PLANE:
+	{
+
+		auto surface = new ShadowedSurface(&objects);
+		auto wall1 = new ShadowedSurface(&objects);
+		auto wall2 = new ShadowedSurface(&objects);
+		wall1->_normal = Vetor3D(0, 1, 1);
+		wall1->_surface->_rotation = (Vetor3D(45, 0, 0));
+		wall2->_surface->_rotation = (Vetor3D(0, 0, 45));
+		wall2->_normal = Vetor3D(-1, 1,0);
+		objects.push_back(surface);
+		objects.push_back(wall1);
+		objects.push_back(wall2);
+		consoleLog(string("Planos sombreáveis adicionados até na posição ").append(to_string(objects.size() - 1)));
+		break;
+	}
+	case K_TOGGLE_INFINITY_LIGHT: 
+	{
+		if (Light::Kind == LightKind::pontual) 
+		{
+			glutGUI::pontual_light[0] = false;
+			Light::Kind = LightKind::infinity;
+		}
+		else
+		{
+			glutGUI::pontual_light[0] = true;
+			Light::Kind = LightKind::pontual;
+		}
+		break;
+	}
 	case K_NEXT_OBJ:
 		
 		selectNextObject();
@@ -265,9 +339,31 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		break;
 	}
 
+	case K_TOGGLE_SHADOW:
+	{
+		auto obj = getSelectedObject();
+		if (obj != nullptr) 
+			obj->_disableShadow = !obj->_disableShadow;
+
+		break;
+	}
+	case K_TOGGLE_SHADOW_ALL:
+	{
+		if (objects.size() == 0)
+			break;
+
+		for (auto obj : objects)
+			obj->_disableShadow = !objects[0]->_disableShadow;
+
+		break;
+	}
+
+
+
 	case K_DESELECT:
 	{
 		deselect();
+		break;
 	}
 	
 
@@ -358,8 +454,8 @@ int main(int argc, char** argv)
 
 	Color color = Color(1, 2, 3, 4);
 	
-	cout << "Hello World! " << endl << &color;
+	cout << "Hello World! " << endl;
 	
-	GUI gui = GUI(800, 600, desenha, teclado, glutGUI::defaultMouseButton, "CG", argc, argv);
+	GUI gui = GUI(800, 600, desenha, teclado, mouse, "CG", argc, argv);
 
 }

@@ -5,10 +5,12 @@ static inline const char K_ADD_BOX = '3';
 static inline const char K_ADD_PYRAMID = '4';
 static inline const char K_ADD_CAMERA_MODEL = '5';
 static inline const char K_ADD_CAMERA = '6';
+static inline const char K_ADD_SHADOWED_PLANE = '7';
 static inline const char K_CAMERA_LOOK_TO = 'b';
 static inline const char K_TRANSFORM_OBJECT = 't';
-static inline const char K_TOGGLE_SHADOW = 'ç';
-static inline const char K_TOGGLE_SHADOW_ALL = 'Ç';
+static inline const char K_TOGGLE_SHADOW = 'y';
+static inline const char K_TOGGLE_SHADOW_ALL = 'Y';
+static inline const char K_TOGGLE_INFINITY_LIGHT = 'j';
 
 static inline const char K_NEXT_OBJ = 'd';
 static inline const char K_PREVIOUS_OBJ = 'a';
@@ -28,11 +30,13 @@ static inline const char K_DECREASE_RGRID = '_';
 static inline const char K_INCREASE_RGRID = '+';
 static inline const char K_TOGGLE_GRID = '[';
 
-
+static vector<Object*> objects;
 
 static inline const string SAVE_FILENAME = "save.cg";
 
 void desenha();
+
+void renderObjects();
 
 void teclado(unsigned char tecla, int mouseX, int mouseY);
 

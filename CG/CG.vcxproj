@@ -159,6 +159,7 @@
     <ClCompile Include="gui_glut\gui.cpp" />
     <ClCompile Include="gui_glut\OpenTextures.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects\shadowedSurface.cpp" />
     <ClCompile Include="texture\color.cpp" />
     <ClCompile Include="texture\material.cpp" />
   </ItemGroup>
@@ -178,10 +179,12 @@
     <ClInclude Include="gui_glut\gui.h" />
     <ClInclude Include="gui_glut\OpenTextures.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="objects\shadowedSurface.h" />
     <ClInclude Include="scene\light.h" />
     <ClInclude Include="texture\color.h" />
     <ClInclude Include="texture\material.h" />
     <ClInclude Include="utils\color.h" />
+    <ClInclude Include="utils\math.h" />
     <ClInclude Include="utils\mouse.h" />
     <ClInclude Include="utils\persistence.h" />
     <ClInclude Include="utils\serializable.h" />

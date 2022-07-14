@@ -31,6 +31,7 @@ public:
     void setDisplay(displayFunction dFunction);
     void setKey(keyFunction kFunction);
 
+    static void mouseButtonInit(int button, int state, int x, int y);
     static void displayInit();
     static void displayEnd();
     static void keyInit(unsigned char key, int x, int y);
@@ -49,9 +50,9 @@ public:
     //-------------------sombra-------------------
     static void shadowMatrixYk(GLfloat shadowMat[4][4], GLfloat lightpos[4], GLfloat k);
     static void shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]);
-    static void shadowMatrix(GLfloat shadowMat[4][4], Vetor3D n, GLfloat distMinPlanoOrigem, GLfloat lightpos[]);
+    static void shadowMatrix(GLfloat shadowMat[4][4], Vetor3D n, GLfloat distMinPlanoOrigem, GLfloat lightpos[4]);
 
-    static void drawPlane(GLfloat planeABCD[], float width = 5.0, float height = 5.0, float discrWidth = 0.03, float discrHeight = 0.03, float texWidth = 5.0, float texHeight = 5.0);
+    static void drawPlane(GLfloat planeABCD[4], float width = 5.0, float height = 5.0, float discrWidth = 0.03, float discrHeight = 0.03, float texWidth = 5.0, float texHeight = 5.0);
     static void drawPlane(Vetor3D n, GLfloat distMinPlanoOrigem, float width = 5.0, float height = 5.0, float discrWidth = 0.03, float discrHeight = 0.03, float texWidth = 5.0, float texHeight = 5.0);
     //-------------------sombra-------------------
 
@@ -67,6 +68,16 @@ public:
    /* static void draw3ds(Model3DS& model3DS, float tx = 0, float ty = 0, float tz = 0,
         float ax = 0, float ay = 0, float az = 0,
         float sx = 1, float sy = 1, float sz = 1);*/
+        //-------------------picking------------------
+    static int processHits(GLint hits, GLuint buffer[]);
+    static void pickingInit(GLint cursorX, GLint cursorY, int w, int h, GLuint* selectBuf, int BUFSIZE);
+    static int pickingClosestName(GLuint* selectBuf, int BUFSIZE);
+    static void gui_gluPickMatrix(GLfloat cursorX, GLfloat cursorY, GLfloat w, GLfloat h, GLint* viewport);
+    //-------------------picking------------------
+
+    //-------------------viewPorts------------------
+    static void glScissoredViewport(int x, int y, int width, int height);
+    //-------------------viewPorts------------------
 };
 
 #endif

@@ -1,6 +1,18 @@
 #include "camera3D.h"
 #include <utils/strings.h>
 #include <utils/serialization.h>
+void Camera3D::setSelected(bool value, bool selectedByParent)
+{
+	Object::setSelected(value, selectedByParent);
+	/*float width = 250;
+	float height = 170;
+
+	GUI::glScissoredViewport(0,20, width, height);
+	glLoadIdentity();
+	gluLookAt(_position.x, _position.y, _position.z, _aim.x, _aim.y, _aim.z, 0.0, 1.0, 0.0);
+	GUI::drawBox(0, 0, 0, 1, 1, 1);
+	cout << "Câmera selecionada" << endl;*/
+}
 void Camera3D::use()
 {
 	if (currentCam == nullptr)

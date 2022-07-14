@@ -95,9 +95,21 @@ void GUI::setKey(keyFunction kFunction)
 
 //using namespace glutGUI;
 
+void GUI::mouseButtonInit(int button, int state, int x, int y)
+{
+    glutGUI::defaultMouseButton(button, state, x, y);
+}
+
 void GUI::displayInit()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //limpa a imagem com a cor de fundo
+
+     //glViewport(0, 0, glutGUI::width, glutGUI::height);
+     //minha implementacao da glViewport nao funcionou pq ela é independente das matrizes de transformação (GL_PROJECTION/GL_MODELVIEW)
+     //glViewport(-1, -1, 2, 2); //viewPort "identidade" (sem efeito)
+     //    glTranslatef(x,y,0);
+     //    glScalef(width/2.0,height/2.0, 1);
+     //    glTranslatef(1,1,0);
 
     const float ar = glutGUI::height > 0 ? (float)glutGUI::width / (float)glutGUI::height : 1.0;
     const float w = glutGUI::width;
@@ -105,10 +117,18 @@ void GUI::displayInit()
     const float orthof = 0.003; //orthoFactor
 
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+
+    if (!glutGUI::picking) {
+        glLoadIdentity();
+    }
+    else {
+        //lembrar de nao inicializar a matriz de projecao,
+        //pois a gluPickMatrix é que redefine os planos de corte do volume de visualizacao reduzido
+        //(apenas na vizinhanca do pixel selecionado pelo mouse)
+    }
 
     if (glutGUI::perspective)
-        gluPerspective(30., ar, 0.1, 1000.);
+        gluPerspective(30., ar, 0.1, 1000.); //?(S . T)? . Np . S . Sh
     else
         glOrtho(-orthof * w, orthof * w, -orthof * h, orthof * h, 0.0, 100.0);
 
@@ -387,6 +407,8 @@ void GUI::shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat 
     shadowMat[3][3] = dot - lightpos[W] * groundplane[W];
 }
 
+
+
 //Create a matrix that will project the desired shadow
 //plano arbitrario
 //definindo a equacao do plano de maneira mais intuitiva
@@ -446,6 +468,7 @@ void GUI::drawPlane(GLfloat planeABCD[4], float width, float height, float discr
     //desenha
     GUI::drawFloor(width, height, discrWidth, discrHeight, texWidth, texHeight);
 }
+
 
 //plano arbitrario
 //definindo a equacao do plano de maneira mais intuitiva
@@ -567,6 +590,142 @@ void GUI::drawQuadBox(float xmin, float ymin, float zmin, float xmax, float ymax
     drawOriQuad(90, 1, 0, 0, xdiff, ydiff, discrWidth, discrHeight, xdiff, ydiff, inverted);
     glPopMatrix();
 }
+
+//-------------------picking------------------
+//processa as intersecoes
+int GUI::processHits(GLint hits, GLuint buffer[])
+{
+    //for each hit in buffer
+      //Number of names in the name stack
+      //Minimum depth of the object
+      //Maximum depth of the object
+      //List of names of the name stack
+
+    int i;
+    GLuint names, * ptr, minZ, * ptrNames, numberOfNames;
+    int nNamesSelec = 0;
+
+    ptrNames = NULL;
+
+    printf("Hits = %d\n", hits);
+    printf("Buffer = ");
+    for (i = 0; i < 4 * hits; i++) {
+        printf("%u ", buffer[i]);
+    }
+    printf("\n");
+
+    ptr = (GLuint*)buffer;
+    minZ = 0xffffffff;
+    for (i = 0; i < hits; i++) {
+        names = *ptr;
+        //if (names == 3) {
+        ptr++;
+        //if ( (minZ==0xffffffff) || (*ptr < minZ && ( *(ptrNames+1)==*(ptr+3) ) ) || ( *(ptrNames+1)==0 && *(ptr+3)==1 ) ) {
+        numberOfNames = names;
+        if (numberOfNames != 0) {
+            if (*ptr < minZ) {
+                minZ = *ptr;
+                ptrNames = ptr + 2;
+                nNamesSelec = names;
+            }
+        }
+        //}
+        ptr += names + 2;
+    }
+
+    printf("Selected = ");
+    ptr = ptrNames;
+    for (int j = 0; j < nNamesSelec; j++, ptr++) {
+        printf("%d ", *ptr);
+    }
+    printf("\n");
+
+    if (ptrNames == NULL)
+        return 0;
+    else
+        return *ptrNames; //acessando o conteudo do ponteiro ptrNames
+        //return {*ptrNames,*(ptrNames+1)};
+}
+
+void GUI::pickingInit(GLint cursorX, GLint cursorY, int w, int h, GLuint* selectBuf, int BUFSIZE)
+{
+    //glViewport(0, 3*glutGUI::height/4, glutGUI::width/4, glutGUI::height/4);
+    //glViewport(glutGUI::width/4, 2*glutGUI::height/4, glutGUI::width/4, glutGUI::height/4);
+    glViewport(0, 0, glutGUI::width, glutGUI::height);
+    GLint viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    glInitNames();
+
+    glSelectBuffer(BUFSIZE, selectBuf);
+    glRenderMode(GL_SELECT);
+
+    glMatrixMode(GL_PROJECTION);
+    //glPushMatrix();
+    glLoadIdentity();
+
+    //redefinindo os planos de corte do volume de visualizacao reduzido (apenas na vizinhanca do pixel selecionado pelo mouse)
+    //gluPickMatrix(cursorX,glutGUI::height-cursorY,w,h,viewport);
+    gui_gluPickMatrix(cursorX, glutGUI::height - cursorY, w, h, viewport);
+    //cout << cursorY << " " << glutGUI::height-cursorY << endl;
+
+    glDisable(GL_LIGHTING);
+
+    glutGUI::picking = true;
+}
+
+int GUI::pickingClosestName(GLuint* selectBuf, int BUFSIZE)
+{
+    glutGUI::picking = false;
+
+    glEnable(GL_LIGHTING);
+
+    //processando as intersecoes
+    int hits;
+
+    // restoring the original projection matrix
+    //glMatrixMode(GL_PROJECTION);
+    //glPopMatrix();
+    //glMatrixMode(GL_MODELVIEW);
+    //glFlush();
+
+    // returning to normal rendering mode
+    hits = glRenderMode(GL_RENDER);
+
+    // if there are hits process them
+    if (hits != 0) {
+        return GUI::processHits(hits, selectBuf);
+    }
+    else {
+        return 0;
+    }
+}
+
+void GUI::gui_gluPickMatrix(GLfloat cursorX, GLfloat cursorY, GLfloat w, GLfloat h, GLint* viewport)
+{
+    //cursorY = glutGUI::height - cursorY;
+    //normalized device (nd) coordinates (cubo 2x2x2)
+    float cursorX_nd = (cursorX - viewport[0]) * (2.0 / viewport[2]) - 1;
+    float cursorY_nd = (cursorY - viewport[1]) * (2.0 / viewport[3]) - 1;
+    float w_nd = w * (2.0 / viewport[2]);
+    float h_nd = h * (2.0 / viewport[3]);
+    glScalef(2.0 / w_nd, 2.0 / h_nd, 1);
+    glTranslatef(-cursorX_nd, -cursorY_nd, 0);
+}
+//-------------------picking------------------
+
+//-------------------viewPorts------------------
+void GUI::glScissoredViewport(int x, int y, int width, int height)
+{
+    glScissor(x, y, width, height);
+    glEnable(GL_SCISSOR_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_SCISSOR_TEST);
+
+    glViewport(x, y, width, height);
+}
+//-------------------viewPorts------------------
+
 
 void GUI::drawBox(float xmin, float ymin, float zmin, float xmax, float ymax, float zmax, bool inverted)
 {
