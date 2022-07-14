@@ -152,6 +152,7 @@
     <ClCompile Include="bib\CameraJogo.cpp" />
     <ClCompile Include="bib\Desenha.cpp" />
     <ClCompile Include="bib\Vetor3D.cpp" />
+    <ClCompile Include="common\ProjKind.cpp" />
     <ClCompile Include="objects\camera3D.cpp" />
     <ClCompile Include="objects\model3d.cpp" />
     <ClCompile Include="objects\object.cpp" />

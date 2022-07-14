@@ -11,6 +11,7 @@ static inline const char K_TRANSFORM_OBJECT = 't';
 static inline const char K_TOGGLE_SHADOW = 'y';
 static inline const char K_TOGGLE_SHADOW_ALL = 'Y';
 static inline const char K_TOGGLE_INFINITY_LIGHT = 'j';
+static inline const char K_TOGGLE_RENDER_PROJ = 'p';
 
 static inline const char K_NEXT_OBJ = 'd';
 static inline const char K_PREVIOUS_OBJ = 'a';
@@ -29,6 +30,13 @@ static inline const char K_INCREASE_GRID = '=';
 static inline const char K_DECREASE_RGRID = '_';
 static inline const char K_INCREASE_RGRID = '+';
 static inline const char K_TOGGLE_GRID = '[';
+
+
+enum class ProjKind
+{
+	Perspective, Orthografic
+};
+
 
 static vector<Object*> objects;
 

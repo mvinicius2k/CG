@@ -28,6 +28,9 @@ int currentCam = -1;
 
 bool _initialized = false;
 
+
+
+
 void consoleLog(string str)
 {
 	cout << str << endl;
@@ -126,15 +129,12 @@ void init()
 void desenha()
 {
 	GUI::displayInit();
-	//glMatrixMode(GL_MODELVIEW);
 	if (!_initialized)
 	{
 		init();
 		_initialized = true;
 	}
 
-	glPushName(20);
-	glPopName();
 
 
 	GUI::setLight(0, 0, 0, 0, true, false);
@@ -158,14 +158,13 @@ void renderObjects()
 
 int picking(GLint cursorX, GLint cursorY, int w, int h)
 {
-	int BUFSIZE = 512;
-	GLuint selectBuf[512];
+	const int BUFSIZE = 512;
+	GLuint selectBuf[BUFSIZE];
 
 	GUI::pickingInit(cursorX, cursorY, w, h, selectBuf, BUFSIZE);
 	GUI::displayInit();
 	
 	renderObjects();
-	//GUI::drawCamera();
 	return GUI::pickingClosestName(selectBuf, BUFSIZE);
 }
 
@@ -173,16 +172,16 @@ void mouse(int button, int state, int x, int y)
 {
 	GUI::mouseButtonInit(button, state, x, y);
 
-	// if the left button is pressed
-	if (button == GLUT_LEFT_BUTTON) {
-		// when the button is pressed
-		if (state == GLUT_DOWN) {
-			//picking
-			auto idSelected = picking(x, y, 5, 5);
+	if (button == GLUT_LEFT_BUTTON)
+	{
+		if (state == GLUT_DOWN) 
+		{
+			auto selectedId = picking(x, y, 5, 5);
 			cout << currentIndex << " selecionado" << endl;
-			if (idSelected != 0) {
+			if (selectedId != 0)
+			{
 				deselect();
-				currentIndex = idSelected - 1;
+				currentIndex = selectedId - 1;
 				objects[currentIndex]->setSelected(true);
 				glutGUI::lbpressed = false;
 			}
@@ -384,6 +383,12 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 	case K_TOGGLE_OBJECT_INFO:
 	{
 		Object::ShowInfos = !Object::ShowInfos;
+		break;
+	}
+	case K_TOGGLE_RENDER_PROJ:
+	{
+		glutGUI::perspective = !glutGUI::perspective;
+		glutGUI::orthof = 0.05;
 		break;
 	}
 	case K_TOGGLE_GRID:
