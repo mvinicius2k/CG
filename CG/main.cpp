@@ -176,7 +176,7 @@ void mouse(int button, int state, int x, int y)
 	{
 		if (state == GLUT_DOWN) 
 		{
-			auto selectedId = picking(x, y, 5, 5);
+			auto selectedId = picking(x, y, 1, 1);
 			cout << currentIndex << " selecionado" << endl;
 			if (selectedId != 0)
 			{
@@ -236,7 +236,7 @@ void teclado(unsigned char tecla, int mouseX, int mouseY)
 		wall1->_normal = Vetor3D(0, 1, 1);
 		wall1->_surface->_rotation = (Vetor3D(45, 0, 0));
 		wall2->_surface->_rotation = (Vetor3D(0, 0, 45));
-		wall2->_normal = Vetor3D(-1, 1,0);
+		wall2->_normal = Vetor3D(	-1, 1,0);
 		objects.push_back(surface);
 		objects.push_back(wall1);
 		objects.push_back(wall2);

@@ -21,15 +21,15 @@ void ShadowedSurface::draw()
 	float shadowMatrix[4][4];
 	
 
-	//glMultTransposeMatrixf(shadowMatrix);
 
 	
 	//auto lightDirection = Vetor3D(sinf(_surface->_rotation.z/2.f), cos(_surface->_rotation.y), sinf(_surface->_rotation.x/2.f));
 	glDisable(GL_LIGHTING);
 	glColor3d(0.0, 0.0, 0.0);
-	GUI::shadowMatrix(shadowMatrix, _normal, 0.001f, lightData);
+	GUI::shadowMatrix(shadowMatrix, _normal, 0.005f, lightData);
 	Math::Transposef(shadowMatrix);
 	glMultMatrixf((GLfloat*)shadowMatrix);
+	//glMultTransposeMatrixf(shadowMatrix);
 
 	
 	glPushMatrix();
