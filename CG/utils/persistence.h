@@ -4,6 +4,7 @@
 #include <fstream>
 #include <filesystem>
 using namespace std;
+//Responsável pela parte de salvar e carregar
 class Persistence
 {
 public:

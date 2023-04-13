@@ -18,6 +18,8 @@ protected:
 	bool _showShadow;
 
 public:
+	//Armazena os dados necessários para desnehar um objeto 3D a cada frame
+
     vector<Vetor3D> _lines, _normals;
 	vector<Material*>  _materials;
     GLenum _mode;

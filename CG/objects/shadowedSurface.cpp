@@ -9,6 +9,8 @@ void ShadowedSurface::draw()
 		cout << "sem objetos " << endl;
 		return;
 	}
+
+	//Contém uma superfície por padrão. Aqui a renderiza e desenha
 	_surface->render();
 
 
@@ -20,25 +22,15 @@ void ShadowedSurface::draw()
 
 	float shadowMatrix[4][4];
 	
-
-
-	
-	//auto lightDirection = Vetor3D(sinf(_surface->_rotation.z/2.f), cos(_surface->_rotation.y), sinf(_surface->_rotation.x/2.f));
 	glDisable(GL_LIGHTING);
 	glColor3d(0.0, 0.0, 0.0);
 	GUI::shadowMatrix(shadowMatrix, _normal, 0.005f, lightData);
-	Math::Transposef(shadowMatrix);
-	glMultMatrixf((GLfloat*)shadowMatrix);
-	//glMultTransposeMatrixf(shadowMatrix);
+	Math::Transposef(shadowMatrix); 
+	glMultMatrixf((GLfloat*)shadowMatrix); 
+	//glMultTransposeMatrixf(shadowMatrix); //esse glMultTransposeMatrixf é do glew, por algum motivo misterioso das profundezas dá erro de seguimentação de todoas as formas que tentei
 
 	
 	glPushMatrix();
-	
-	
-	//glTranslatef(_position.x, _surface->_position.y, _position.z);
-	//glRotatef(_surface->_rotation.x, 1, 0, 0);
-	//glRotatef(_surface->_rotation.y, 0, 1, 0);
-	//glRotatef(_surface->_rotation.z, 0, 0, 1);
 	
 	for (auto object : *_objects)
 	{

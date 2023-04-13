@@ -2,6 +2,7 @@
 #include <cmath>
 
 using namespace  std;
+// Basicamente implementa a sensação de grade no mundo ao transladar, rotacionar e escalar
 class Mouse
 {
 public:

@@ -3,7 +3,7 @@
 #include <utils/serializable.h>
 #include "../bib/Vetor3D.h"
 
-
+//Engloba a cor e alguns elementos de superfície. Implementei somente se é especular ou não, mas pode ser usado também para escrever outras propriedades que definiriam como o objeto interage com a luz
 class Material : Serializable<Material>
 {
 public:

@@ -42,7 +42,6 @@ void Object::render()
     {
         
         
-        
 
         glTranslatef(_position.x, _position.y, _position.z);
         glRotatef(_rotation.x, 1,0,0);

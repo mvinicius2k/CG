@@ -14,6 +14,7 @@ enum ClassType
 {
 	None, EModel3D, ECamera3D
 };
+// Responsável por ler os objetos e transformar os dados em strings para salvar. Qualquer objeto que queira ser transformado em string deve hedar desta classe e implementar os métodos dela
 class Serialization
 {
 public:

@@ -22,9 +22,11 @@ using namespace std;
 
 
 
-
+//index do objeto atual selecionado no array
 int currentIndex = -1;
+//camera também
 int currentCam = -1;
+
 
 bool _initialized = false;
 

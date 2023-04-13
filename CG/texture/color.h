@@ -3,6 +3,7 @@
 #include <random>
 #include <utils/serializable.h>
 
+//estrutura de dados para armazenar a cor e alguns utilitários 
 class Color : Serializable<Color>
 {
 private:

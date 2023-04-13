@@ -1,6 +1,7 @@
 #pragma once
 #include <objects/model3d.h>
 
+//Superfície capaz de gerar sombras 
 class ShadowedSurface : public Object
 {
 private:
