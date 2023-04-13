@@ -1,5 +1,9 @@
 #pragma once
-static inline const char K_ADD_TABLE = '1';
+
+//Teclas de controle
+
+
+static inline const char K_ADD_TABLE = '1'; 
 static inline const char K_ADD_HOUSE = '2';
 static inline const char K_ADD_BOX = '3';
 static inline const char K_ADD_PYRAMID = '4';
@@ -31,25 +35,39 @@ static inline const char K_DECREASE_RGRID = '_';
 static inline const char K_INCREASE_RGRID = '+';
 static inline const char K_TOGGLE_GRID = '[';
 
-
+//Tipos de projeção
 enum class ProjKind
 {
 	Perspective, Orthografic
 };
 
-
+//Array de objetos do mundo
 static vector<Object*> objects;
 
+//Nome do arquivo a salvar/carregar
 static inline const string SAVE_FILENAME = "save.cg";
 
+/// <summary>
+/// Função executada diversas vezes dentro do loop do gl
+/// </summary>
 void desenha();
 
 void renderObjects();
 
+/// <summary>
+/// Funçaõ responsável pela entrada do teclado e mouse
+/// </summary>
 void teclado(unsigned char tecla, int mouseX, int mouseY);
 
+/// <summary>
+/// Dessleciona o objeto
+/// </summary>
+/// <returns></returns>
 int deselect();
 
+/// <summary>
+/// Ponto de partida
+/// </summary>
 int main(int argc, char** argv);
 
 void consoleLog(string str);

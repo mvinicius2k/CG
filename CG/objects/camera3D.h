@@ -22,6 +22,7 @@ public:
 	Vetor3D _up;
 	virtual void setSelected(bool value, bool selectedByParent = false) override;
 
+	
 	static void UseDefaultCam()
 	{
 		if (currentCam != nullptr)

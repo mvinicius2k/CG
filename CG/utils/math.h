@@ -4,6 +4,7 @@
 #define Tranpose
 
 using namespace std;
+// utilitários de calculos
 class Math
 {
 public:

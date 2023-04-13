@@ -6,7 +6,7 @@
 using namespace std;
 
 
-
+// Contém comportamentos padrão para todo objeto do mundo, como translação, rotação, seleção etc
 class Object : Serializable<Object>
 {
 private:
@@ -14,10 +14,12 @@ private:
 
 protected:
     
-
+    // Comportamento do objeto pelo movimento do mouse
     void mouseInput();
+    // Desenha o objeto chamando as funções de desenhar do opengl
     virtual void draw();
-    bool _selected, _selectedByParent;
+    bool _selected;
+    bool _selectedByParent; //se está selecionado pela hierarquia (se a casa é selecionada, as paredes, chão etc são selecionadas tambem)
 
 
 
@@ -32,12 +34,12 @@ public:
     Vetor3D _position, _rotation, _scale;
     bool _active;
     float _originSize = 1.f;
-    vector<Object*> _children;
+    vector<Object*> _children; //objetos filhos. Os objetos filhos são posicionados/rotacionados/escalados localmente em relação ao pai
     bool isSelected();
     virtual void setSelected(bool value, bool selectedByParent = false);
 
     void syncGUI();
-
+    //Foi feito para englobar o draw(). É responsável por aplicar as transformações no objeto a cada frame. 
     void render();
     void consoleLog(string text);
 
